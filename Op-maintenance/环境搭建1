@@ -1,0 +1,4 @@
+问题1：virtualbox创建好虚拟机后出现分辨率的问题，屏幕很小
+解决方法：点击增强功能，有可供选择的分辨率
+问题2：ubuntu默认没有安装ssh
+解决方法：sudo apt-get install openssh-server
