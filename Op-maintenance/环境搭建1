@@ -6,4 +6,6 @@
 步骤：
 1，更新ubuntu源source.list
 2,配置vim 安装：sudo apt-get install vim
-3，
+3，安装screen
+4，命令行提示符只列出最后一个目录
+5，go安装
