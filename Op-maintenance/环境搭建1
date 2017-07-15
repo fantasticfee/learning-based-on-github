@@ -2,7 +2,15 @@
 解决方法：点击增强功能，有可供选择的分辨率
 问题2：ubuntu默认没有安装ssh
 解决方法：sudo apt-get install openssh-server
+问题3： vim安装问题：
+vim : Depends: vim-common (= 2:7.3.429-2ubuntu2) but 2:7.3.429-2ubuntu2.1 is to be installed
+解决方法：
+a.先执行$ sudo apt-get remove vim-common 卸载vim-common
+b. 再进行安装vim，执行$ sudo apt-get install vim
 
+为了部署go开发环境，需要64位环境：
+查看当前系统位数：
+getconf LONG_BIT
 步骤：
 1，更新ubuntu源source.list
 2,配置vim 安装：sudo apt-get install vim
