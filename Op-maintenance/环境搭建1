@@ -17,3 +17,19 @@ getconf LONG_BIT
 3，安装screen
 4，命令行提示符只列出最后一个目录
 5，go安装
+6，ubuntu配置静态ip
+vi /etc/network/interfaces
+添加内容：
+auto eth0
+iface eth0 inet static
+address 192.168.8.100    
+netmask 255.255.255.0
+gateway 192.168.8.2
+dns-nameserver 119.29.29.29（可选）
+重启网络：sudo /etc/init.d/networking restart
+7，virdualbox 后台运行：
+windows下cd到virdualbox目录下执行命令：
+vboxmanage startvm nenew（虚拟机名） --type headless
+vboxmanage controlvm nenew poweroff
+
+
