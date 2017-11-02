@@ -1,1 +1,7 @@
 一，安装docker
+1,sudo apt-get install docker.io
+二，搭建开发环境
+1，git配置
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+git config --global merge.tool vimdiff
