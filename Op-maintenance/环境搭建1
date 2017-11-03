@@ -31,5 +31,31 @@ dns-nameserver 119.29.29.29（可选）
 windows下cd到virdualbox目录下执行命令：
 vboxmanage startvm nenew（虚拟机名） --type headless
 vboxmanage controlvm nenew poweroff
+8，开发环境搭建
+
+screen配置：
+startup_message off
+term linux
+defscrollback 409600
+##设置状态栏
+hardstatus alwayslastline
+shelltitle "$|bash"
+ 
+hardstatus string '%{= kG}[ %Y/%m/%d %{G}%c:%s %{g}][%= %{= kw}%?%-Lw%?%{Y}%n*%f%t %{K}%?%+Lw%?%= %{kG}][ %{C}(F8)Screen (F9)Title (F10)Detach (F11)Prev (F12)Next %{kg}]'
+
+
+vim升级到最新版本：
+yum install ncurses-devel
+wget https://github.com/vim/vim/archive/master.zip
+unzip master.zip
+cd vim-master
+cd src/
+./configure
+make
+sudo make install
+
+vim go配置：
+1,下载go最新版本源码编译安装,配置GOPATH和GOROOT，GOROOT存储go源码及工具，GOPATH存储go项目
+2，
 
 
