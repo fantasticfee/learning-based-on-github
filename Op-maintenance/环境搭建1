@@ -7,6 +7,9 @@ vim : Depends: vim-common (= 2:7.3.429-2ubuntu2) but 2:7.3.429-2ubuntu2.1 is to 
 解决方法：
 a.先执行$ sudo apt-get remove vim-common 卸载vim-common
 b. 再进行安装vim，执行$ sudo apt-get install vim
+问题4： go1.6编译问题
+ a working Go tree >= Go 1.4.错误
+解决方法：下载go1.4源码编译安装
 
 为了部署go开发环境，需要64位环境：
 查看当前系统位数：
