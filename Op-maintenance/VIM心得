@@ -1,0 +1,74 @@
+一、screen
+^a c：创建一个新窗口
+^a ^a：在两个窗口间切换
+^a D：离线（这个一会儿再说）
+^a 数字：切换到指定窗口
+^a ESC：进入全屏编辑模式，拿整个命令行当作vi来说，可以在窗口间拷贝数据
+
+screenrc配置：
+vbell off
+autodetach on
+startup_message off
+defscrollback 3000
+hardstatus alwayslastline "%Lw"
+二、vim常用技巧
+移动：
+0和$，分别移动到一行的开始和结束
+^g：显示你现在编辑什么文件
+*是向下查找当前单词，＃号是反过来找，找了第一个位置后，再找可以用n、N
+f/t是找本行内的字符（只要用熟一个就够了），大写是反向找
+[]，后面跟[]或者{}找到本{}块
+
+编辑：
+进入修改模式：
+cw：change word, 删除当前的单词，并开始输入
+o/O：在下面/上面开一个新行，然后开始编辑。为了自动缩进，使用:set autoindent smartindent。
+
+如果是大段的编辑，可以用选中命令:
+v：开始移动选择。
+V：开始整行选择。
+^v：开始竖选择。
+viw：选中一个单词。
+v系列命令要和移动命令配合起来用，才会高效
+gq，重新格式化，自动换行等。
+u/U/~，修改大小写，u全部小写，U全部大写，~大小写切换。
+
+ctags：
+打开多个文件，每个在vim中称为一个buffer，用:ls就可以看到你有哪些buffer，然后用:b xxx命令就
+可以切换buffer，xxx可以是buffer的编号，也可以是buffer文件或者路径中的一部分文字，按一下tab就
+可以联想，所以切换起来很方便的。
+
+执行:b list然后按Tab，就会联想出来。
+标记#表示上一个buffer，%a表示当前buffer，:b #之类的指示也是可以的。
+切换命令：^（不是Ctrl，而是那个和6复用的键），就表示:b #
+编程常用的命令gf，GotoFile，可以打开当前的文件
+Unix下有个工具叫ctags，可以生成变量定义到文件位置的索引。vim可以利用这种索引。可以
+执行ctags -R --extra=f在一个目录下生成一个tags文件，只要目录中有这个文件，vim就可以通过这个文件来进行跳转。
+比如：执行:ta start_kernel，就可以跳转到start_kernel()这个函数的定义上
+整个tag跳转的过程，会被记录到一个称为tagstack的堆栈中，用:tags就可以查看这个堆栈，^T和:ta本质上就是遍历这个堆栈。
+
+cscope
+tags的缺点是只有定义的位置，没有索引的位置，这种情况下可以用cscope，cscope命令生成的数据库包含了索引的位置。
+cscope -Rb可以生成数据库，也在当前目录，名称叫cscope.out。要使用需要在vim中使用如下命令：
+:cs add cscope.out
+之后，就可以用:cs find s XXXXX来找XXXXX的索引了。
+s的位置定义是索引、定义还是别的什么类别。如果你不想每次都敲那个add命令，可以增加如下设置：
+if filereadable("cscope.out")
+        cs add cscope.out
+endif
+
+
+quickfix
+对于Linux Kernel，你就算用source insight，很多定义也是找不出索引的，因为都是用宏拼成的。作为最后一步，这时你只能用grep。vim中，grep也是集成的（虽然最终调的是系统的grep命令），你可以这样找一个变量：
+:grep -Ir --include "*.[chS]" "I_know_the_head.*I_know_the_tail" .
+含义自己看手册，注意那个--include，一般我都会加这个，否则不小心就把tags文件给一起搜了，不值当。这个当然也可以做热键或者做命令缩写，但我现在指法出神入化，也不需要，反正grep不多，经常grep的工程师不是好的工程师（因为他不用脑）。
+grep搜出来的东西，保存在一个叫quickfix的窗口中，你可以用:copen来打开这个窗口，用:colder和:cnewer可以在quickfix记录堆栈中切换，你可以用^w^w来切换窗口，跳到quickfix窗口中，移动到喜欢的行，回车，就可以切换位置，quickfix窗口中，除了不能编辑，所有你喜欢vim命令都可以用。要不怎么说学习vim的投资是保值的呢：）
+如果你编译程序，可以运行:make，这会主动调用make命令来编译程序，编译的结果也生成一个quickfix，所以你可以像其他SDK一样，把编译结果和位置对应。
+其实所有的这些结果，make也好，grep也好，如果你有那个数据，把它保存在一个文件中，然后用:cfile命令，就可以生成quickfix。我在看Linux代码的时候，常常用这样的方式查找东西：
+:e 1                      <-- 创建并打开一个临时文件
+:r !grep -nr --include "*.[ch]" "start_kernel" <-- 查找定义
+:r !grep -nr --include "Kconfig" "SCHED_.*SMT" <-- 再找一些
+... <-------  编辑临时文件（“1”），把不要的结果删除
+:cb    <----  把当前文件当作quickfix来关联
+剩下的事情就不用我来说了吧：）
+
