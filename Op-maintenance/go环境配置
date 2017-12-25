@@ -1,0 +1,97 @@
+一、go 环境变量
+export GOPATH=/home/zy/gocode
+export PATH=$PATH:/home/zy/go/bin:$GOPATH/bin:/usr/lib
+export GOROOT=/home/zy/go
+
+#只显示当前目录
+export PS1='[\u@\h \W]\$'
+
+二、vim配置
+colorscheme evening
+" set background=dark
+
+set fileformats=unix
+set shiftwidth=1
+set nu
+set hlsearch
+
+set nocompatible
+nnoremap k gk
+nnoremap gk k
+nnoremap j gj
+nnoremap gj j
+
+autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/vundle/
+" set rtp+=~/.vim/bundle/vim-go/
+call vundle#rc()
+
+Plugin 'fatih/vim-go'
+Plugin 'majutsushi/tagbar'
+Plugin 'nsf/gocode'
+
+filetype plugin indent on    " required
+syntax enable
+syntax on
+
+if filereadable("cscope.out")
+        cs add cscope.out
+endif
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_structs = 1
+let g:godef_split=3
+
+let g:tagbar_right=1
+let g:tagbar_width=30
+let g:go_fmt_command = 'gofmt'
+
+let g:tagbar_right=1
+let g:tagbar_width=30
+
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+    \ }
+
+if has("cscope")
+     set cscopetag
+set cscopetag
+"    set csto=0
+"   set cscopeverbose
+   set cscopequickfix=s-,g-,c-,d-,i-,t-,e-
+ endif
+
