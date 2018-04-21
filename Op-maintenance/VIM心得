@@ -70,5 +70,5 @@ grep搜出来的东西，保存在一个叫quickfix的窗口中，你可以用:c
 :r !grep -nr --include "Kconfig" "SCHED_.*SMT" <-- 再找一些
 ... <-------  编辑临时文件（“1”），把不要的结果删除
 :cb    <----  把当前文件当作quickfix来关联
-剩下的事情就不用我来说了吧：）
+
 
