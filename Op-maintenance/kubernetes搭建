@@ -1,5 +1,28 @@
-一，安装docker
-1,sudo apt-get install docker.io
+一，安装docker(转载自https://blog.csdn.net/cloudman6/article/details/70227455）
+安装 Docker:
+配置 Docker 的 apt 源
+1. 安装包，允许 apt 命令 HTTPS 访问 Docker 源。
+$ sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+2. 添加 Docker 官方的 GPG
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+3. 将 Docker 的源添加到 /etc/apt/sources.list
+$ sudo add-apt-repository \
+  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) \
+  stable"
+$ sudo apt-get update
+$  sudo apt-get install docker-ce
+3. 增加镜像加速器
+使用daocloud进行镜像加速：https://www.daocloud.io/mirror#accelerator-doc
+sudo service docker restart
+
+二，下载源码：git clone https://github.com/kubernetes/kubernetes.git
+可以事先下好，直接拷贝到虚机中
+3，git checkout -b 
 二，搭建开发环境
 1，git配置
 $ git config --global user.name "John Doe"
