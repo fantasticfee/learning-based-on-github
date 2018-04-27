@@ -53,12 +53,27 @@ wget https://github.com/vim/vim/archive/master.zip
 unzip master.zip
 cd vim-master
 cd src/
-./configure
+./configure --with-features=huge --enable-rubyinterp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-i386-linux-gnu/ --enable-perlinterp --enable-gui=gtk2 --enable-cscope --enable-luainterp --enable-perlinterp --enable-multibyte --prefix=/usr
 make
 sudo make install
 
 vim go配置：
 1,下载go最新版本源码编译安装,配置GOPATH和GOROOT，GOROOT存储go源码及工具，GOPATH存储go项目
-2，
+2，选用 vim-pathogen作为插件管理工具，配置：
+     mkdir -p ~/.vim/autoload ~/.vim/bundle
+     下载 vim-pathogen 到 ~/.vim/autoload 目录下：curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim 
+     编辑  ~/.vimrc：
+       execute pathogen#infect()  
+       syntax on  
+       filetype plugin indent on 
+       重启vim 即可安装成功，之后如果想要安装其他插件，只需把插件放到 ~/.vim/bundle 目录下
+       例如安装vim-go:clone vim-go 到 ~/.vim/bundle 目录下即可;
+       
+       进入vim，执行vim-go提供的 :GoInstallBinaries 命令，通常会因为网络问题无法下载插件，这个时候比较麻烦，只能
+       通过vim.go文件中插件的连接，一个个下载到$GOPATH/src目录下，再到相应的插件源码目录执行go install，这会在GOPATH的
+       bin，pkg目录下生成相应的文件。vim-go所有插件di
+       
+       
+     
 
 
