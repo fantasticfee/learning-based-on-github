@@ -1,0 +1,6 @@
+一、
+
+redis ：
+单线程应用；
+mysql等关系型数据库，需要规范化为行、列、表，mongodb，elasticsearch需要在存储之前预先json化数据，redis没有这种转化；
+大量不经常使用的数据且无需立即存储，redis不是最佳方案；
