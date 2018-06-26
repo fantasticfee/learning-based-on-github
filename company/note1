@@ -1,0 +1,3 @@
+一、
+根据数据库创建好的table自动生成go代码：
+bee generate appcode -driver=mysql -conn="root:toor@tcp(ssh.azbzu.top:3306)/face_verified" -level=1 pause
