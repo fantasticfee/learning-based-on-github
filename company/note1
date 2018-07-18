@@ -12,3 +12,5 @@ bee generate appcode -driver=mysql -conn="root:toor@tcp(ssh.azbzu.top:3306)/face
         commitencoding = utf-8
         logoutputencoding = gbk
 
+3、json web token和session的区别
+4、后端主动发送数据到前端，需要使用websocker建立长链接
