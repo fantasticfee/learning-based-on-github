@@ -29,3 +29,9 @@ $ git config --global user.name "John Doe"
 $ git config --global user.email johndoe@example.com
 git config --global merge.tool vimdiff
 
+三、编译
+编译到hyperkube出现分配内存失败的问题
+sudo bash -x  build/run.sh hack/build-go.sh cmd/hyperkube
+
+尝试解决：
+  1、扩大内存：vboxmanage.exe modifyvm paas --memory 4096
