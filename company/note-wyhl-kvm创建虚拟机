@@ -39,3 +39,5 @@ VNC连接：server：物理机ip:port, 其中随着port的改变指向不同的�
 VNC客户端连接不上，需要在物理机中配置下面的命令：
  iptables -A IN_public_allow -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW -j ACCEPT
  iptables -A IN_public_allow -p tcp -m tcp --dport 5900 -m conntrack --ctstate NEW -j ACCEPT
+ 
+VNC正常连接上物理机后，在物理机上ifconfig，可以看到创建了一个virbr0，virbr0连接的就是虚拟机eth0的端口
