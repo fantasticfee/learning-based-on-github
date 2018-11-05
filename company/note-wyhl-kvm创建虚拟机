@@ -1,0 +1,41 @@
+centos上使用kvm创建虚拟机
+
+1.制作 cloud init 初始化镜像
+cat > cloud-config <<EOF
+#cloud-config
+preserve_hostname: False
+hostname: x
+fqdn: x.x.x
+password: x
+chpasswd: { expire: False }
+ssh_pwauth: True
+runcmd:
+  - [ yum, -y, remove, cloud-init ]
+EOF
+
+cloud-localds cloud-config.img cloud-config
+
+2.下载centos镜像，这里使用的是CentOS-7-x86_64-GenericCloud.qcow2.xz
+3.导入 centos cloud image 到 KVM
+xz -d CentOS-7-x86_64-GenericCloud.qcow2.xz
+cp CentOS-7-x86_64-GenericCloud.qcow2 centos.qcow2 #复制一份
+qemu-img resize centos.qcow2 +10G #增加磁盘大小
+
+virt-install --connect=qemu:///system  --name ansiblek8s1  --ram 2048  --vcpus=2  --os-type=linux  --os-variant=centos7.0  
+--disk centos.qcow2,device=disk,bus=virtio  --disk cloud-config.img,device=cdrom  --graphics vnc,listen=0.0.0.0  --import
+这里遇见问题：ERROR    Failed to connect socket to '/var/run/libvirt/libvirt-sock': No such file or directory
+解决方法，重新安装,真是见鬼了：
+systemctl stop libvirtd
+systemctl start libvirtd
+systemctl status libvirtd
+
+小知识点：
+libvirt作为中间适配层，通过一种基于驱动程序的架构来实现对不同的底层Hypervisor的支持，提供给类似KVM这样的管理工具使用，让底层对上层应用空间做到完全透明。
+
+执行完virt-install命令后，一直卡了十几分钟，正常情况下，应该是秒级就建立起来了。
+ctrl+c退出，执行virsh list 可以看到机器已经running了，鉴于之前的异常情况，怀疑虚拟机运行不正常。
+
+VNC连接：server：物理机ip:port, 其中随着port的改变指向不同的虚拟机，本物理机的第一个虚拟机是端口5900，有个疑问，为什么这里的端口号就是5900？
+VNC客户端连接不上，需要在物理机中配置下面的命令：
+ iptables -A IN_public_allow -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW -j ACCEPT
+ iptables -A IN_public_allow -p tcp -m tcp --dport 5900 -m conntrack --ctstate NEW -j ACCEPT
