@@ -36,6 +36,8 @@ libvirt作为中间适配层，通过一种基于驱动程序的架构来实现�
 ctrl+c退出，执行virsh list 可以看到机器已经running了，鉴于之前的异常情况，怀疑虚拟机运行不正常。
 
 VNC连接：server：物理机ip:port, 其中随着port的改变指向不同的虚拟机，本物理机的第一个虚拟机是端口5900，有个疑问，为什么这里的端口号就是5900？
+解答：kvm安装虚拟机不指定端口的话，默认是从5900开始
+
 VNC客户端连接不上，需要在物理机中配置下面的命令：
  iptables -A IN_public_allow -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW -j ACCEPT
  iptables -A IN_public_allow -p tcp -m tcp --dport 5900 -m conntrack --ctstate NEW -j ACCEPT
@@ -57,8 +59,17 @@ ONBOOT=yes
 
 在物理机上ifconfig，可以看到创建了一个virbr0，virbr0连接的就是虚拟机eth0的端口
 virbr0具体是什么，用来做什么的，如何理解？
+初步理解成switch或bridge,虚拟机之间，虚拟机和物理机之间沟通都通过vribr0。
 
 下面设置好后虚拟机正常可以访问外网
    iptables -t nat -A POSTROUTING -s 192.168.122.0/24 -j MASQUERADE
 
-创建好第二个虚拟机，配置好iptables，发现问题：虚拟机内部ping不通网关
+创建好第二个虚拟机，配置好iptables，发现问题：虚拟机内部ping不通网关显示 unreachable
+解决方法：打开vnet1，2，3接口，正常ping通
+心得：面对unreachable的错误，首先排查路由，然后再查看物理或逻辑上的那个端口没有打开
+这里还有一个疑问，使用virt-install创建虚拟机，第一个vnet0在创建好后是自动打开的，而vnet1,2,3是关闭的，需要手动打开？
+
+访问外网，ping www.baidu.com,需要虚拟机内部需要配置DNS：
+修改/etc/resolv.conf:
+nameserver 192.168.122.1
+search localdomain
