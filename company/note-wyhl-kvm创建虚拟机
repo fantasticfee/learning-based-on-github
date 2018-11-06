@@ -39,5 +39,26 @@ VNC连接：server：物理机ip:port, 其中随着port的改变指向不同的�
 VNC客户端连接不上，需要在物理机中配置下面的命令：
  iptables -A IN_public_allow -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW -j ACCEPT
  iptables -A IN_public_allow -p tcp -m tcp --dport 5900 -m conntrack --ctstate NEW -j ACCEPT
- 
-VNC正常连接上物理机后，在物理机上ifconfig，可以看到创建了一个virbr0，virbr0连接的就是虚拟机eth0的端口
+
+小知识点：物理机上执行virsh console 虚拟机name 也可以连接上虚拟机
+
+VNC正常连接上虚拟机后，配置静态IP：
+到/etc/sysconfig/network-scripts目录下修改对应端口的文件，内容如下：
+BOOTPROTO=static
+DEVICE=eth0
+HWADDR=52:54:00:66:2d:b5
+ONBOOT=yes
+TYPE=Ethernet
+IPADDR=192.168.122.101
+NETMASK=255.255.255.0
+GATEWAY=192.168.122.1
+USERCTL=no
+ONBOOT=yes
+
+在物理机上ifconfig，可以看到创建了一个virbr0，virbr0连接的就是虚拟机eth0的端口
+virbr0具体是什么，用来做什么的，如何理解？
+
+下面设置好后虚拟机正常可以访问外网
+   iptables -t nat -A POSTROUTING -s 192.168.122.0/24 -j MASQUERADE
+
+创建好第二个虚拟机，配置好iptables，发现问题：虚拟机内部ping不通网关
