@@ -66,6 +66,7 @@ virbr0具体是什么，用来做什么的，如何理解？
 
 创建好第二个虚拟机，配置好iptables，发现问题：虚拟机内部ping不通网关显示 unreachable
 解决方法：打开vnet1，2，3接口，正常ping通
+   ip add show显示所有接口信息执行 ip link set vnet4 up
 心得：面对unreachable的错误，首先排查路由，然后再查看物理或逻辑上的那个端口没有打开
 这里还有一个疑问，使用virt-install创建虚拟机，第一个vnet0在创建好后是自动打开的，而vnet1,2,3是关闭的，需要手动打开？
 
