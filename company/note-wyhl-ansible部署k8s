@@ -3,7 +3,39 @@ ansible部署k8s
 参考：https://github.com/gjmzj/kubeasz/blob/master/docs/setup/quickStart.md
 小知识点：ip add show 显示所有接口信息
 
-ansible all -m ping -vvvv ，报错误：
+1.        安装依赖工具
+
+# 文档中脚本默认均以root用户执行# 安装 epel 源并更新
+yum install epel-release –y(最好每台机器装一下)
+yum install net-tools
+yum update# 删除不要的默认安装
+yum erase firewalld firewalld-filesystem python-firewall -y# 安装python
+yum install python -y
+
+2.        安装ansible
+# CentOS 7
+yum install git python-pip -y# pip安装ansible(国内如果安装太慢可以直接用pip阿里云加速)#pip install pip --upgrade#pip install ansible
+pip install pip --upgrade -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+pip install --no-cache-dir ansible -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+3.   在deploy节点配置免密码登陆
+
+ssh-keygen -t rsa -b 2048 回车 回车 回车
+ssh-copy-id $IPs #$IPs为所有节点地址包括自身，按照提示输入yes 和root密码
+
+4.在deploy节点编排k8s安装
+a，使用git clone下载：
+git clone https://github.com/gjmzj/kubeasz.git
+mkdir -p /etc/ansible
+mv kubeasz/* /etc/ansible
+
+b，下载所有的二进制文件，然后移动到/etc/ansible/bin
+
+c, 配置集群参数
+必要配置：cd /etc/ansible && cp example/hosts.m-masters.example hosts, 然后实际情况修改此hosts文件
+验证ansible 安装：ansible all -m ping 正常能看到节点返回 SUCCESS
+这里出现问题：
+    ansible all -m ping -vvvv ，报错误：
 192.168.122.101 | UNREACHABLE! => {
     "changed": false, 
     "msg": "SSH Error: data could not be sent to remote host \"192.168.122.101\". Make sure this host can be reached over ssh", 
@@ -12,4 +44,20 @@ ansible all -m ping -vvvv ，报错误：
 经排查，机器能够正常ping和ssh上。
 解决方法：ssh-copy-id $IPs #$IPs为所有节点地址包括自身，按照提示输入yes 和root密码，这一步没有设置好，导致ssh其他节点还需要密码。正常情况下，执行成功后，
 ssh其他节点就不需要密码了。
+d,分步安装
+ansible-playbook 01.prepare.yml
+开始使用不用负载分担节点
+ansible-playbook 02.etcd.yml
+ansible-playbook 03.docker.yml
+ansible-playbook 04.kube-master.yml
+安装master这一步产生错误：
+    TASK [kube-master : 创建 kubernetes 证书和私钥] ***************************************
+    fatal: [192.168.122.103]: FAILED! => {"changed": true, "cmd": "cd /etc/kubernetes/ssl && /opt/kube/bin/cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem 
+    -ca-key=/etc/kubernetes/ssl/ca-key.pem -config=/etc/kubernetes/ssl/ca-config.json -profile=kubernetes kubernetes-csr.json 
+    | /opt/kube/bin/cfssljson -bare kubernetes", "delta": "0:00:00.021759", "end": "2018-11-06 13:56:56.173869", "msg": 
+    "non-zero return code", "rc": 1, "start": "2018-11-06 13:56:56.152110", "stderr": "Failed to load config file: 
+    {\"code\":5200,\"message\":\"could not read configuration file\"}Failed to parse input: unexpected end of JSON input", 
+    "stderr_lines": ["Failed to load config file: {\"code\":5200,\"message\":\"could not read configuration file\"}
+    Failed to parse input: unexpected end of JSON input"], "stdout": "", "stdout_lines": []}
+
 
