@@ -3,3 +3,10 @@ ansible部署k8s
 参考：https://github.com/gjmzj/kubeasz/blob/master/docs/setup/quickStart.md
 小知识点：ip add show 显示所有接口信息
 
+ansible all -m ping -vvvv ，报错误：
+192.168.122.101 | UNREACHABLE! => {
+    "changed": false, 
+    "msg": "SSH Error: data could not be sent to remote host \"192.168.122.101\". Make sure this host can be reached over ssh", 
+    "unreachable": true
+}
+经排查，机器能够正常ping和ssh上。
