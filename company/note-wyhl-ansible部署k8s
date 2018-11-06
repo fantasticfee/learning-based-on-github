@@ -1,0 +1,5 @@
+
+ansible部署k8s
+参考：https://github.com/gjmzj/kubeasz/blob/master/docs/setup/quickStart.md
+小知识点：ip add show 显示所有接口信息
+
