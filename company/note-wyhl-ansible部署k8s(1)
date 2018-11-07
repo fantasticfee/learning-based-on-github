@@ -1,9 +1,11 @@
 
-ansible部署k8s
+ansible部署k8s（allinone)
 参考：https://github.com/gjmzj/kubeasz/blob/master/docs/setup/quickStart.md
 小知识点：ip add show 显示所有接口信息
 
-1.        安装依赖工具
+allinone模式安装步骤：
+
+1.        安装依赖工具
 
 # 文档中脚本默认均以root用户执行# 安装 epel 源并更新
 yum install epel-release –y(最好每台机器装一下)
@@ -44,6 +46,7 @@ c, 配置集群参数
 经排查，机器能够正常ping和ssh上。
 解决方法：ssh-copy-id $IPs #$IPs为所有节点地址包括自身，按照提示输入yes 和root密码，这一步没有设置好，导致ssh其他节点还需要密码。正常情况下，执行成功后，
 ssh其他节点就不需要密码了。
+
 d,分步安装
 ansible-playbook 01.prepare.yml
 开始使用不用负载分担节点
@@ -59,5 +62,23 @@ ansible-playbook 04.kube-master.yml
     {\"code\":5200,\"message\":\"could not read configuration file\"}Failed to parse input: unexpected end of JSON input", 
     "stderr_lines": ["Failed to load config file: {\"code\":5200,\"message\":\"could not read configuration file\"}
     Failed to parse input: unexpected end of JSON input"], "stdout": "", "stdout_lines": []}
+
+hosts文件中将master节点改为和deploy节点同一IP的机器，重新分步骤执行，又能够正常运行。
+# 分步安装
+ansible-playbook 01.prepare.yml
+ansible-playbook 02.etcd.yml
+ansible-playbook 03.docker.yml
+ansible-playbook 04.kube-master.yml
+ansible-playbook 05.kube-node.yml
+ansible-playbook 06.network.yml
+ansible-playbook 07.cluster-addon.yml 
+
+验证k8s已正常部署：
+kubectl version
+kubectl get componentstatus # 可以看到scheduler/controller-manager/etcd等组件 Healthy
+kubectl cluster-info # 可以看到kubernetes master(apiserver)组件 running
+kubectl get node # 可以看到单 node Ready状态
+kubectl get pod --all-namespaces # 可以查看所有集群pod状态，默认已安装网络插件、coredns、metrics-server等
+kubectl get svc --all-namespaces # 可以查看所有集群服务状态
 
 
