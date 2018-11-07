@@ -23,3 +23,81 @@ c, kubeasz 集成安装
 未创建集群：修改 ansible hosts 文件，在 deploy 节点配置 NTP_ENABLED=yes
 已创建集群：ansible-playbook /etc/ansible/roles/chrony/chrony.yml
 
+二、理解每个步骤
+ansible-playbook 01.prepare.yml  
+  chrony role: 集群节点时间同步[可选] （根据ntp配置就可）
+  deploy role: 创建CA证书、kubeconfig、kube-proxy.kubeconfig （参考https://coreos.com/os/docs/latest/generate-self-signed-certificates.html）
+  prepare role: 分发CA证书、kubectl客户端安装、环境配置
+  lb role: 安装负载均衡[可选]（待理解）
+ansible-playbook 02.etcd.yml
+
+ansible-playbook 03.docker.yml
+ansible-playbook 04.kube-master.yml
+  主要部署三个组件apiserver scheduler controller-manager
+  apiserver参数：
+  --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota,NodeRestriction
+  准入控制，所有请求都需要按照顺序一一符合各种规则，不符合任一个，请求就不通过。
+  ResourceQuota：是配额请求，这里的配额具体是指那些资源呢？
+  ServiceAccount,DefaultStorageClass,NodeRestriction：不是很理解
+  --bind-address：https ip
+  --insecure-bind-address： http ip
+  --authorization-mode：安全访问的认证模式列表，这里的Node,RBAC意思是限制kubelets能够写入的API对象，配合NodeRestriction，待深入理解
+  --kubelet-https=true ：可以用https方式访问kubelet
+  --kubelet-client-certificate=/etc/kubernetes/ssl/admin.pem : 访问kubelet的客户端证书
+  --kubelet-client-key=/etc/kubernetes/ssl/admin-key.pem :
+  --anonymous-auth=false : 禁止匿名
+  --basic-auth-file=/etc/kubernetes/ssl/basic-auth.csv ：访问的认证方式，具体是通过用户名密码认证
+   --service-cluster-ip-range=10.68.0.0/16 : ip池，用于给pod分配ip
+   -service-node-port-range=20000-40000 ：node port的范围
+   --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem ：tls证书
+   --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem ： tls私钥
+   --client-ca-file=/etc/kubernetes/ssl/ca.pem ：客户端ca
+   --service-account-key-file=/etc/kubernetes/ssl/ca-key.pem ： ca 私钥
+   --etcd-cafile=/etc/kubernetes/ssl/ca.pem ：etcd ca
+   --etcd-certfile=/etc/kubernetes/ssl/kubernetes.pem ： etcd证书
+   --etcd-keyfile=/etc/kubernetes/ssl/kubernetes-key.pem： etcd 私钥
+   --etcd-servers=https://192.168.122.101:2379  ： etcd ip
+   --enable-swagger-ui=true ：使能swagger功能
+   --endpoint-reconciler-type=lease : 新版本添加了租约的机制，不是很理解
+   --allow-privileged=true：运行用户以root权限运行
+   --audit-log-maxage=30 ：
+   --audit-log-maxbackup=3 
+   --audit-log-maxsize=100 
+   --audit-log-path=/var/lib/audit.log
+   --event-ttl=1h
+   --requestheader-client-ca-file=/etc/kubernetes/ssl/ca.pem
+   --requestheader-allowed-names=
+   --requestheader-extra-headers-prefix=X-Remote-Extra-
+   --requestheader-group-headers=X-Remote-Group
+   --requestheader-username-headers=X-Remote-User
+   --proxy-client-cert-file=/etc/kubernetes/ssl/aggregator-proxy.pem
+   --proxy-client-key-file=/etc/kubernetes/ssl/aggregator-proxy-key.pem
+   --enable-aggregator-routing=true
+   --runtime-config=batch/v2alpha1=true
+   --v=2
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ansible-playbook 05.kube-node.yml
+ansible-playbook 06.network.yml
+ansible-playbook 07.cluster-addon.yml 
