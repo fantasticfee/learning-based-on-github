@@ -1,0 +1,25 @@
+一, chrony时间同步配置
+默认已安装chrony
+a，deploy 节点配置为ntp server
+  ntp server 配置
+在/etc/chrony.conf 配置以下几项:
+# 1. 配置时间源，国内可以增加阿里的时间源 ntp1.aliyun.com
+server {{ ntp_server }} iburst
+
+# 2. 配置允许同步的客户端网段
+allow {{ local_network }}
+
+# 3. 配置离线也能作为源服务器
+local stratum 10
+
+b, 其他节点配置为ntp client
+  ntp client 配置
+# 1. 清除所有其他时间源，只配置一个本地 deploy节点作为源（下面参数不做修改）
+server {{ groups.deploy[0] }} iburst  
+
+# 2. 其他所有项可以默认配置
+
+c, kubeasz 集成安装
+未创建集群：修改 ansible hosts 文件，在 deploy 节点配置 NTP_ENABLED=yes
+已创建集群：ansible-playbook /etc/ansible/roles/chrony/chrony.yml
+
