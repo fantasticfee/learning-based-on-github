@@ -1,22 +1,24 @@
 重新部署k8s
 参考：https://github.com/kubernetes-incubator/kubespray
 
-1.        安装依赖工具
+1.  准备依赖的组件
+参考https://github.com/gjmzj/kubeasz/blob/master/docs/setup/quickStart.md，把pip的源改成国内源
 
+yum install epel-release –y
 
-# 文档中脚本默认均以root用户执行# 安装 epel 源并更新
-
-yum install epel-release –y(最好每台机器装一下)
-
-
-
-
-2.        安装ansible
-
-# CentOS 7
 
 yum install git python-pip -y# pip安装ansible(国内如果安装太慢可以直接用pip阿里云加速)#pip install pip --upgrade#pip install ansible
 
 pip install pip --upgrade -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
 pip install --no-cache-dir ansible -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+git clone https://github.com/kubernetes-incubator/kubespray
+
+pip install -r requirements.txt
+出现问题:Cannot uninstall 'requests'. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.
+解决方法：pip install six --upgrade --ignore-installed six
+
+
+
+
