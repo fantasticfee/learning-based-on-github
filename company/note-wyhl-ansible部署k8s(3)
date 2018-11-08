@@ -1,3 +1,22 @@
 重新部署k8s
 参考：https://github.com/kubernetes-incubator/kubespray
 
+1.        安装依赖工具
+
+
+# 文档中脚本默认均以root用户执行# 安装 epel 源并更新
+
+yum install epel-release –y(最好每台机器装一下)
+
+
+
+
+2.        安装ansible
+
+# CentOS 7
+
+yum install git python-pip -y# pip安装ansible(国内如果安装太慢可以直接用pip阿里云加速)#pip install pip --upgrade#pip install ansible
+
+pip install pip --upgrade -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+pip install --no-cache-dir ansible -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
