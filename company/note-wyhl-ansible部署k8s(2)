@@ -23,6 +23,10 @@ c, kubeasz 集成安装
 未创建集群：修改 ansible hosts 文件，在 deploy 节点配置 NTP_ENABLED=yes
 已创建集群：ansible-playbook /etc/ansible/roles/chrony/chrony.yml
 
+问题：第一次使用单主模式部署k8s，没有使用clean操作，之间开始用多主模式部署，发现后中止，然后再clean操作，发现deploy节点192.168.122.101丢失
+了ip，查看系统日志，发现当前网上已经有一个ip是192.168.122.101，这个ip怎么多出来的，待查明原因？修改了deploy节点IP，deploy节点网络恢复正常，
+继续部署，在第三步安装docker时发现192.168.122.102（原来的主节点）docker0网桥消失了？
+
 二、理解每个步骤
 ansible-playbook 01.prepare.yml  
   chrony role: 集群节点时间同步[可选] （根据ntp配置就可）
