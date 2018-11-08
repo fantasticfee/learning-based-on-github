@@ -40,11 +40,11 @@ ansible-playbook 04.kube-master.yml
   ResourceQuota：是配额请求，这里的配额具体是指那些资源呢？
   ServiceAccount,DefaultStorageClass,NodeRestriction：不是很理解
   --bind-address：https ip
-  --insecure-bind-address： http ip
+  --insecure-bind-address： http ip 不做任何认证授权机制
   --authorization-mode：安全访问的认证模式列表，这里的Node,RBAC意思是限制kubelets能够写入的API对象，配合NodeRestriction，待深入理解
-  --kubelet-https=true ：可以用https方式访问kubelet
-  --kubelet-client-certificate=/etc/kubernetes/ssl/admin.pem : 访问kubelet的客户端证书
-  --kubelet-client-key=/etc/kubernetes/ssl/admin-key.pem :
+  --kubelet-https=true ：用https方式访问kubelet
+  --kubelet-client-certificate=/etc/kubernetes/ssl/admin.pem : kubelet证书
+  --kubelet-client-key=/etc/kubernetes/ssl/admin-key.pem : kubelet私钥
   --anonymous-auth=false : 禁止匿名
   --basic-auth-file=/etc/kubernetes/ssl/basic-auth.csv ：访问的认证方式，具体是通过用户名密码认证
    --service-cluster-ip-range=10.68.0.0/16 : ip池，用于给pod分配ip
@@ -60,10 +60,10 @@ ansible-playbook 04.kube-master.yml
    --enable-swagger-ui=true ：使能swagger功能
    --endpoint-reconciler-type=lease : 新版本添加了租约的机制，不是很理解
    --allow-privileged=true：运行用户以root权限运行
-   --audit-log-maxage=30 ：
-   --audit-log-maxbackup=3 
-   --audit-log-maxsize=100 
-   --audit-log-path=/var/lib/audit.log
+   --audit-log-maxage=30 ：旧日志最长保留天数
+   --audit-log-maxbackup=3 ：旧日志文件最多保留个数
+   --audit-log-maxsize=100  ：日志文件最大大小（单位MB），超过后自动做轮转（默认为100MB）
+   --audit-log-path=/var/lib/audit.log :审计日志路径
    --event-ttl=1h
    --requestheader-client-ca-file=/etc/kubernetes/ssl/ca.pem
    --requestheader-allowed-names=
@@ -76,6 +76,36 @@ ansible-playbook 04.kube-master.yml
    --runtime-config=batch/v2alpha1=true
    --v=2
    
+  controller-manager参数：
+   --address=127.0.0.1 ：值必须为 127.0.0.1，因为当前 kube-apiserver 期望 scheduler 和 controller-manager 在同一台机器
+   --master=http://127.0.0.1:8080 ：使用非安全 8080 端口与 kube-apiserver 通信
+   --allocate-node-cidrs=true 
+   --service-cluster-ip-range=10.68.0.0/16 ：参数指定 Cluster 中 Service 的CIDR范围，必须和 kube-apiserver 中的参数一致
+   --cluster-cidr=172.20.0.0/16 ：指定 Cluster 中 Pod 的 CIDR 范围，该网段在各 Node 间必须路由可达(calico 实现)
+   --cluster-name=kubernetes
+   --cluster-signing-cert-file=/etc/kubernetes/ssl/ca.pem
+   --cluster-signing-key-file=/etc/kubernetes/ssl/ca-key.pem
+   --service-account-private-key-file=/etc/kubernetes/ssl/ca-key.pem
+   --root-ca-file=/etc/kubernetes/ssl/ca.pem
+   --horizontal-pod-autoscaler-use-rest-clients=true 
+   --leader-elect=true ：使用多节点选主的方式选择主节点。只有主节点才会启动所有控制器，而其他从节点则仅执行选主算法
+   --v=2
+   
+   scheduler参数：
+   --address=127.0.0.1 ：与上同理
+   --master=http://127.0.0.1:8080 ：与上同理 
+   --leader-elect=true ：部署多台机器组成的 master 集群时选举产生一个处于工作状态的 kube-controller-manager 进程
+   --v=2
+   
+几个疑问：
+   
+   证书之间的关系：
+   
+   
+   service account ?:
+   
+   服务访问原理：
+  访问service-->根据DNS访问对应IP（cluster Ip)-->kube-proxy使用iptable规则将cluseter ip引向对应的pod ip
    
    
    
