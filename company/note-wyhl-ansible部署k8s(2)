@@ -43,8 +43,8 @@ ansible-playbook 04.kube-master.yml
   --insecure-bind-address： http ip 不做任何认证授权机制
   --authorization-mode：安全访问的认证模式列表，这里的Node,RBAC意思是限制kubelets能够写入的API对象，配合NodeRestriction，待深入理解
   --kubelet-https=true ：用https方式访问kubelet
-  --kubelet-client-certificate=/etc/kubernetes/ssl/admin.pem : kubelet证书
-  --kubelet-client-key=/etc/kubernetes/ssl/admin-key.pem : kubelet私钥
+  --kubelet-client-certificate=/etc/kubernetes/ssl/admin.pem : 访问kubelet,用户证书作为kubelet证书
+  --kubelet-client-key=/etc/kubernetes/ssl/admin-key.pem : 访问kubelet,用户私钥作为kubelet私钥
   --anonymous-auth=false : 禁止匿名
   --basic-auth-file=/etc/kubernetes/ssl/basic-auth.csv ：访问的认证方式，具体是通过用户名密码认证
    --service-cluster-ip-range=10.68.0.0/16 : ip池，用于给pod分配ip
@@ -98,6 +98,8 @@ ansible-playbook 04.kube-master.yml
    --v=2
    
 几个疑问：
+   外部请求进入集群时，需要经过认证，授权， Admission Control：
+      认证仅仅是指用户账号密码的检查？ 授权结合授权模式理解，adminssion control更多的是对资源的控制
    
    证书之间的关系：
    
