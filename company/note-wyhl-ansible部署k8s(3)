@@ -19,6 +19,29 @@ pip install -r requirements.txt
 出现问题:Cannot uninstall 'requests'. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.
 解决方法：pip install six --upgrade --ignore-installed six
 
+由于镜像使用的是google的，需要翻墙才能下载，所以这里需要修改一些文件中的镜像地址，修改文件如下：
+kubespray/roles/kubernetes-apps/ansible/defaults/main.yml
+kubespray/roles/download/defaults/main.yml
+kubespray/extra_playbooks/roles/download/defaults/main.yml
+inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+
+2. 执行部署
+ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root cluster.yml
+
+出现问题：ERROR! no action detected in task. This often indicates a misspelled module name, or incorrect module path.
+原因及解决方法：requirements.txt安装时部分没有安装好，所以依赖没有解决，导致出现这个问题
+检查了下，ansible-modules-hashivault没有安装，直接install会出问题，需要执行下面的命令
+pip install ansible-modules-hashivault --upgrade --ignore-installed ansible-modules-hashivault
+
+继续执行部署，出现错误，docker启动失败：
+fatal: [node2]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
+fatal: [node3]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
+fatal: [node1]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
+查看日志：
+Nov  9 02:47:42 x systemd: Cannot add dependency job for unit docker-storage-setup.service, ignoring: Unit not found.
+Nov  9 02:47:42 x systemd: Starting Docker Application Container Engine...
+Nov  9 02:47:42 x docker: unknown flag: --insecure-registry
 
 
 
