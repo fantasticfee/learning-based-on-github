@@ -57,6 +57,10 @@ Nov  9 02:47:42 x docker: unknown flag: --insecure-registry
  安装主线内核：
   yum --enablerepo=elrepo-kernel install kernel-ml
 
+vim /etc/default/grub
+GRUB_DEFAULT=0   #<==save改为0
+grub2-mkconfig -o /boot/grub2/grub.cfg
+重新启动
 
 
 
