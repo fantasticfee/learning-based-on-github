@@ -74,3 +74,7 @@ virbr0具体是什么，用来做什么的，如何理解？
 修改/etc/resolv.conf:
 nameserver 192.168.122.1
 search localdomain
+
+删除虚拟机：
+virsh destroy test_vm
+ virsh undefine test_vm
