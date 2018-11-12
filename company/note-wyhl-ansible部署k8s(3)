@@ -49,8 +49,13 @@ Nov  9 02:47:42 x docker: unknown flag: --insecure-registry
 建议：了解下docker的几种driver及大概原理，互相比较优缺点
 
 由于overlay2的功能要求内核版本4.0以上，因此升级内核：
- rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
- 
+ 在 CentOS 7 上启用 ELRepo 仓库
+  rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+  rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
+ 列出可用的内核相关包：
+  yum --disablerepo="*" --enablerepo="elrepo-kernel" list available
+ 安装主线内核：
+  yum --enablerepo=elrepo-kernel install kernel-ml
 
 
 
