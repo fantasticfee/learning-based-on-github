@@ -43,5 +43,15 @@ Nov  9 02:47:42 x systemd: Cannot add dependency job for unit docker-storage-set
 Nov  9 02:47:42 x systemd: Starting Docker Application Container Engine...
 Nov  9 02:47:42 x docker: unknown flag: --insecure-registry
 
+原因：目前看起来是安装docker的选项出了问题，默认driver是devicemapper,使能了docker-storage，二devicemapper是需要lvm分区的，新建的虚拟机没有，所有docker启动失败。
+解决方法：driver改用overlay2
+
+建议：了解下docker的几种driver及大概原理，互相比较优缺点
+
+由于overlay2的功能要求内核版本4.0以上，因此升级内核：
+ rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+ 
+
+
 
 
