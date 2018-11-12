@@ -54,8 +54,8 @@ Nov  9 02:47:42 x docker: unknown flag: --insecure-registry
   rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
  列出可用的内核相关包：
   yum --disablerepo="*" --enablerepo="elrepo-kernel" list available
- 安装主线内核：
-  yum --enablerepo=elrepo-kernel install kernel-ml
+ 安装内核：
+  yum --enablerepo=elrepo-kernel install kernel-lt.x86_64
 
 vim /etc/default/grub
 GRUB_DEFAULT=0   #<==save改为0
