@@ -66,4 +66,11 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 版本的docker一直失败，尝试全部用新节点部署。新节点部署，docker安装成功。
 
 docker安装过后，遇到镜像问题，因为镜像地址是国外google的，还是需要修改地址。
+sed -i 's/gcr\.io\/google-containers/mirrorgooglecontainers/g' roles/download/defaults/main.yml
+ sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' roles/kubernetes-apps/ansible/defaults/main.yml
+  sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' roles/kubernetes-apps/ansible/defaults/main.yml
+  sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+   sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' roles/kubernetes-apps/container_engine_accelerator/nvidia_gpu/templates/nvidia-driver-install-daemonset.yml.j2
+sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' roles/kubernetes-apps/container_engine_accelerator/nvidia_gpu/vars/ubuntu-16.yml
+
 
