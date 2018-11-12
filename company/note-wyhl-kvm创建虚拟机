@@ -78,3 +78,23 @@ search localdomain
 删除虚拟机：
 virsh destroy test_vm
  virsh undefine test_vm
+
+心得：
+kvm虚拟机列表：
+[root@localhost home]# virsh list
+ Id    Name                           State
+----------------------------------------------------
+ 1     ansiblek8s1                    running
+ 3     ansiblek8s3                    running
+ 4     ansiblek8s4                    running
+ 5     ansiblek8s5                    running
+ 6     ansiblek8s6                    running
+ 10    ansiblek8s2                    running
+ 11    ansiblek8s7                    running
+ 12    ansiblek8s8                    running
+ 13    ansiblek8s9                    running
+
+几个接口之间的对应关系：
+ host --------> vnet0--------eth0<---vm1
+如上表，ID会自动增加，name具有唯一性， 删除虚拟机后，再创新创建虚拟机，新虚拟机eth0对应的vnet接口是选择空闲最小的接口，若没有的话则
+新建一个，本次创建虚拟机，每个虚拟机对应宿主机的一个端口，从5900开始，创建好后，需使用iptable引入虚拟机相应的接口，否则vnc连接失败。
