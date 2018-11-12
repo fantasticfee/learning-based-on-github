@@ -62,5 +62,8 @@ GRUB_DEFAULT=0   #<==save改为0
 grub2-mkconfig -o /boot/grub2/grub.cfg
 重新启动
 
+使用overlay2还是再docker启动部分失败，尝试加入了一个新节点，发现新节点成功了，怀疑老节点之前安装过其他版本docker的原因，有残余配置导致安装的新
+版本的docker一直失败，尝试全部用新节点部署。新节点部署，docker安装成功。
 
+docker安装过后，遇到镜像问题，因为镜像地址是国外google的，还是需要修改地址。
 
