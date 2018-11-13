@@ -65,12 +65,28 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 使用overlay2还是再docker启动部分失败，尝试加入了一个新节点，发现新节点成功了，怀疑老节点之前安装过其他版本docker的原因，有残余配置导致安装的新
 版本的docker一直失败，尝试全部用新节点部署。新节点部署，docker安装成功。
 
-docker安装过后，遇到镜像问题，因为镜像地址是国外google的，还是需要修改地址。
-sed -i 's/gcr\.io\/google-containers/mirrorgooglecontainers/g' roles/download/defaults/main.yml
- sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' roles/kubernetes-apps/ansible/defaults/main.yml
-  sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' roles/kubernetes-apps/ansible/defaults/main.yml
-  sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
-   sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' roles/kubernetes-apps/container_engine_accelerator/nvidia_gpu/templates/nvidia-driver-install-daemonset.yml.j2
-sed -i 's/gcr\.io\/google_containers/mirrorgooglecontainers/g' roles/kubernetes-apps/container_engine_accelerator/nvidia_gpu/vars/ubuntu-16.yml
+docker安装过后，遇到镜像问题，因为镜像地址是国外google的，还是需要修改镜像地址。
+将需要的镜像push到自己的阿里云仓库上，然后修改脚本中要替换的镜像地址。
+
+使用aliyun镜像：
+docker login --username=fantasticfee registry.cn-hangzhou.aliyuncs.com
+需要替换的镜像：
+pause-amd64
+calico-ctl
+cluster-proportional-autoscaler-amd64
+hyperkube-amd64
+k8s-dns-dnsmasq-nanny-amd64
+k8s-dns-kube-dns-amd64
+k8s-dns-sidecar-amd64
+kube-registry-proxy
+kubernetes-dashboard-amd64
+
+继续部署，出现apiserver一直没有启动的情况
+启动失败，查看日志docker logs,显示不识别选项。 
+Error: unknown flag: --endpoint-reconciler-type
+查看hyperkube 的版本，还是老版本，而reconciler是个新特性，解决方法，换个新版本的查看hyperkube。
+更换新版本，apiserver果然恢复正常。
+
+
 
 
