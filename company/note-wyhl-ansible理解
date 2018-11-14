@@ -29,6 +29,8 @@ ansible_ssh_extra_args：该设置将ssh附件到命令行
 ansible_ssh_pipelining：决定是否使用ssh 管道，它将覆盖ansible.cfg中的pipelining设置
 
 疑问：ssh管道用来做什么？
+SSH pipelining 是一个加速 Ansible 执行速度的简单方法。ssh pipelining 默认是关闭，之所以默认关闭是为了兼容不同的 sudo 配置，主要是 requiretty 选项。如果不使用 sudo，建议开启。
+打开此选项可以减少 ansible 执行没有传输时 ssh 在被控机器上执行任务的连接数。不过，如果使用 sudo，必须关闭 requiretty 选项。
 
 2.2版本后的特性.
 ansible_ssh_executable：这个设置将覆盖使用系统ssh的默认行为。它将覆盖ansible.cfg中的ssh_executable设置
@@ -40,4 +42,25 @@ ansible_become_method：允许设置特殊权限的方法
 ansible_become_user：允许设置特殊权限的用户，相当于 ansible_sudo_user 或者 ansible_su_user
 
 ansible_become_pass：允许设置特殊权限的密码（不要在这里直接输入明文），相当于 ansible_sudo_pass 或者 ansible_su_pass
+
+三、role分析
+基于kubespray的cluster.yml文件顺序进行分析
+kubespray-defaults------------->download
+kubernetes/preinstall --------->adduser
+container-engine  -------------->container-engine/docker------>container-engine/docker-storage
+etcd --------------------> adduser
+kubernetes/node -----------------> kubernetes/secrets
+network_plugin -----------------> network_plugin/calico
+kubernetes-apps/policy_controller ------------------------> policy_controller/calico
+kubernetes-apps/ingress_controller -----------------------> kubernetes-apps/ingress_controller/ingress_nginx
+                                                            kubernetes-apps/ingress_controller/cert_manager
+kubernetes-apps/external_provisioner ----------------->  kubernetes-apps/external_provisioner/local_volume_provisioner
+                                                         kubernetes-apps/external_provisioner/cephfs_provisioner
+
+
+
+
+
+
+
 
