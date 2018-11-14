@@ -1,0 +1,6 @@
+一、几种分拆部分执行的方法
+ansible-playbook -i production site.yml --tags ntp : 指定plays或tags为ntp的task执行
+ansible-playbook -i production webservers.yml --limit boston ：指定host为boston的执行
+
+
+疑问：hosts: bastion[0]这个从哪活得的？facts用来干嘛？
