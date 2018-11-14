@@ -4,3 +4,40 @@ ansible-playbook -i production webservers.yml --limit boston ：指定host为bos
 
 
 疑问：hosts: bastion[0]这个从哪活得的？facts用来干嘛？
+bastion用于连接unreached host，也就是需要通过跳板机连接。
+
+二、参数含义
+ssh 连接
+ansible_host：使用主机的名称去连接，可以使用别名
+
+ansible_port：如果默认不是22的话，要定义ssh的端口号
+
+ansible_user：默认ssh连接用户
+
+ansible_ssh_pass：默认ssh 连接的passwd（不要在这里出现明文密码，而是要使用vault）
+
+ansible_ssh_private_key_file：连接时使用私钥文件。如果不想使用ssh代理的话，可以有多个密钥
+
+ansible_ssh_common_args：该设置将总是为sftp,scp,ssh附加到命令行，可用于为某个主机或组配置ProxyCommand
+
+ansible_sftp_extra_args：该设置将sftp附加到命令行
+
+ansible_scp_extra_args：该设置将scp附加到命令行
+
+ansible_ssh_extra_args：该设置将ssh附件到命令行
+
+ansible_ssh_pipelining：决定是否使用ssh 管道，它将覆盖ansible.cfg中的pipelining设置
+
+疑问：ssh管道用来做什么？
+
+2.2版本后的特性.
+ansible_ssh_executable：这个设置将覆盖使用系统ssh的默认行为。它将覆盖ansible.cfg中的ssh_executable设置
+使用特权命令（如sudo）
+ansible_become：允许升级权限，相当于 ansible_sudo 或者 ansible_su
+
+ansible_become_method：允许设置特殊权限的方法
+
+ansible_become_user：允许设置特殊权限的用户，相当于 ansible_sudo_user 或者 ansible_su_user
+
+ansible_become_pass：允许设置特殊权限的密码（不要在这里直接输入明文），相当于 ansible_sudo_pass 或者 ansible_su_pass
+
