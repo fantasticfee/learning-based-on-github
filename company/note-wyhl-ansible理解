@@ -59,9 +59,24 @@ kubernetes-apps/ingress_controller -----------------------> kubernetes-apps/ingr
 kubernetes-apps/external_provisioner ----------------->  kubernetes-apps/external_provisioner/local_volume_provisioner
                                                          kubernetes-apps/external_provisioner/cephfs_provisioner
 
-kubespray-defaults：基本所有节点都会执行
- tasks：
-   1、
+kubespray-defaults：基本所有节点都会执行download_prep.yml
+     tasks:
+      download_prep.yml:创建目录
+      download_container.yml --------> set_docker_image_facts.yml : 设置images参数，下载images；
+      疑问： 通过docker inspect -f $(docker images -q)获取image信息，初始的image哪里来？
+bootstrap-os：初始化系统配置
+kubernetes/preinstall：安装证书及各种K8S相关准备工资
+adduser：创建用户和用户组
+container-engine
+container-engine/docker：启动docker
+container-engine/docker-storage： 安装docker-storage-setup
+etcd：启动etcd
+
+
+
+      
+      
+                              
 
 
 
