@@ -72,7 +72,20 @@ container-engine/docker：启动docker
 container-engine/docker-storage： 安装docker-storage-setup
 etcd：启动etcd
 
-
+ 知识点：ansible常用的几个模块，具体的方法（待了解）
+        copy模块 
+        file模块 
+        cron模块 
+        group模块 
+        user模块 
+        yum模块 
+        service模块 
+        script模块 
+        ping模块 
+        command模块 
+        raw模块 
+        get_url模块 
+        synchronize模块
 
       
       
