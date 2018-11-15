@@ -73,14 +73,29 @@ container-engine/docker-storage： 安装docker-storage-setup
 etcd：启动etcd
 
  知识点：ansible常用的几个模块，具体的方法（待了解）
-        copy模块 
-        file模块 
-        cron模块 
+   ansible-doc -s  module_name ：获取指定模块的使用信息 
+        copy模块
+          -a 'dest= ( 远程主机上路径 )  src= ( 本地主机路径 )   content= ( 直接指明内容 )  owner=  group=  mode=' 
+            目的：拷贝src到dest
+            命令：ansible test-m copy -a 'src=/root/.ssh/id_rsa.pub dest=/root'
+        file模块
+          -a 'path=  mode= owner= group= state={file|directory|link|hard|touch|absent} src= (link ，链接至何处 ) ' 
+          目的：更改指定节点上/tmp/t.sh的权限为755，属主和属组为root
+          命令：ansible all -m file -a "dest=/tmp/t.sh mode=755 owner=root group=root"
+        cron模块
+          -a  'name= state=  minute=  hour= day= month=  weekday= job='
         group模块 
+          -a 'name= state={present|absent}  gid=  system= ( 系统组 ) '
         user模块 
+           -a 'name=  state={present ( 创建 ) |absent ( 删除 ) }  force= ( 是否强制操作删除家目录 )   system=  uid=  shell= home=' 
         yum模块 
-        service模块 
+          -a 'name=  conf_file= ( 指明配置文件 ) state={present|latest|absent} enablerepo= disablerepo='    
+        service模块
+          目的：启动指定节点上的 puppet 服务，并让其开机自启动
+          命令：ansible 10.1.1.113 -m service -a 'name=puppet state=restartedenabled=yes'
         script模块 
+          运行脚本
+          ansible all -m script -a '/tmp/a.sh'
         ping模块 
         command模块 
         raw模块 
