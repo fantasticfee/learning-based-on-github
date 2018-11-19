@@ -1,2 +1,15 @@
 flannel：
-  
+  专门为K8S的跨主机通信提供的一种第三层网络方案，flannle相关的网络配置存储在etcd中，集群内的所有节点都运行flannel，
+flannel有配置一个网络空间，该net分配给每个host一个subnet，subnet分配IP给pod。
+选择哪个对外网卡与subnet绑定
+1) 如果”–iface”和”—-iface-regex”都未指定时，则直接选取默认路由所使用的输出网卡
+2) 如果”–iface”参数不为空，则依次遍历其中的各个实例，直到找到和该网卡名或IP匹配的实例为止
+3) 如果”–iface-regex”参数不为空，操作方式和2)相同，唯一不同的是使用正则表达式去匹配
+flannel_backend_type参数：vxlan,hosthw等。主要目的是如何转发包到目的pod ip对应的host   
+  每种类型大概有什么区别？
+    hostgw:监听到etcd的eventadd事件，根据添加的lease信息，直接添加一条路由，目的是subnet,网关是对应的host
+    udp：监听到etcd的eventadd事件，flannel往数组中增添一条对应的lease记录，每次转发都查询这里记录
+    vxlan: eventadd事件后，lease信息中多了flannel的mac地址，subnet与mac地址映射，mac地址与host映射
+原理：将目的地址为非本机容器的流量送到相应主机：如果集群的主机都在一个子网内，就搞一条路由转发过去；若是不在一个子网内，就搞一条隧道转发过去。
+flannel将上述过程进行了自动化。
+
