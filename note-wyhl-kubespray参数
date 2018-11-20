@@ -1,0 +1,60 @@
+# all.yml: 
+
+#kubespray-defaults/defaults/main.yaml
+#etcd_data_dir: /var/lib/etcd
+#bin_dir: /usr/local/bin
+access_ip: 1.1.1.1    //flannel 主节点ip
+apiserver_loadbalancer_domain_name: "elb.some.domain"
+loadbalancer_apiserver:
+  address: 1.2.3.4
+  port: 1234
+loadbalancer_apiserver_localhost: true
+nginx_kube_apiserver_port: 8443
+
+#cloud_provider:
+kubeadm_enabled: false   //kubeadm使能
+
+#http_proxy: ""
+#https_proxy: ""
+#no_proxy: ""
+
+#additional_no_proxy: ""
+
+cert_management: script   //是否使用脚本下载证书，若自备证书，这里填“none”
+ignore_assert_errors: false  //Set to true to allow pre-checks to fail and continue deployment
+
+#kubernetes/node/defaults/main.yml
+kubelet_load_modules: false   //是否有加载内核服务的内力，用于容器绑定host中的永久volume
+kube_read_only_port: 10255   //kubelet只读端口，通过该端口不需要认证和验证
+#container-engine/defaults/main.yml
+upstream_dns_servers:     //若cluseter dns没有设置，就用该值；相当于作为备份
+  - 8.8.8.8
+  - 8.8.4.4
+
+#download/defaults/main.yml
+download_validate_certs: False   //下载文件是否需要证书
+download_container: true          //下载镜像需要做的准备（创建目录等），一般为true
+pyrepo_index: https://pypi.example.com/simple        //pip源设置
+pyrepo_cert: /etc/ssl/certs/ca-certificates.crt      //pip下载证书设置
+
+#docker.yml
+
+#kubespray-defaults/defaults/main.yaml
+docker_storage_options: -s overlay2   //选定docker driver(overlay2或devicemapper)
+
+docker_container_storage_setup: false  //是否选择devicemapper
+
+docker_dns_servers_strict: false  // 若使能，只使用前三的nameserver
+
+docker_iptables_enabled: "false"  //docker daemon 使能iptables
+
+docker_insecure_registries:    //镜像仓库
+   - mirror.registry.io
+   - 172.19.16.11
+
+docker_registry_mirrors:
+   - https://registry.docker-cn.com
+   - https://mirror.aliyuncs.com
+
+docker_mount_flags:
+
