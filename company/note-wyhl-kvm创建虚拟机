@@ -78,6 +78,8 @@ search localdomain
 删除虚拟机：
 virsh destroy test_vm
  virsh undefine test_vm
+ 
+ 开启虚拟机：
  virsh start test_vm 
 
 心得：
