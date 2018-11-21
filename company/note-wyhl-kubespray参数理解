@@ -1,3 +1,4 @@
+
 flannel：
   专门为K8S的跨主机通信提供的一种第三层网络方案，flannle相关的网络配置存储在etcd中，集群内的所有节点都运行flannel，
 flannel有配置一个网络空间，该net分配给每个host一个subnet，subnet分配IP给pod。
@@ -62,6 +63,20 @@ Usage of ./kube-router:
     etcd_peer_client_auth:https使能
     etcd_metrics：模式分为基本和扩展
     etcd_memory_limit：运行内存，默认是4G，若没有4G，可自行设置
-    
+   
+   
+   # all.yml: 
+   access_ip:一般为master node ip,更复杂的情况可能代表不同的含义
+   
+   以下参数用于HA：
+   apiserver_loadbalancer_domain_name: "elb.some.domain"  
+    loadbalancer_apiserver:   
+      address: 1.2.3.4
+      port: 1234
+      //用于外部LB
+      
+    loadbalancer_apiserver_localhost: true           //是否开启内部LB
+    nginx_kube_apiserver_port: 8443         //本地内部负载均衡接口，内部LB仅接受客户端连接到本地主机
+   
     
     
