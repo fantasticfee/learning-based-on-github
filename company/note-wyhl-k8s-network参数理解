@@ -19,6 +19,7 @@ Calico：
   把每个操作系统的协议栈认为是一个路由器，然后把所有的容器认为是连在这个路由器上的网络终端，
   在路由器之间跑标准的路由协议——BGP的协议，然后让它们自己去学习这个网络拓扑该如何转发。
   监听etcd，每有一个新host或新pod，产生对应的虚拟网络设备。
+  peer_with_router：
   nat_outgoing：需要Docker访问外网
   calico_pool_name：地址池名称
   global_as_num：bgp中的as总数量
