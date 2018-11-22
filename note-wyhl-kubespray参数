@@ -3,13 +3,17 @@
 #kubespray-defaults/defaults/main.yaml
 #etcd_data_dir: /var/lib/etcd
 #bin_dir: /usr/local/bin
-access_ip: 1.1.1.1    //flannel 主节点ip
+access_ip: 1.1.1.1    //一般为master node ip,更复杂的情况可能代表不同的含义
+
+ 以下参数用于HA:{
 apiserver_loadbalancer_domain_name: "elb.some.domain"
 loadbalancer_apiserver:
   address: 1.2.3.4
-  port: 1234
-loadbalancer_apiserver_localhost: true
-nginx_kube_apiserver_port: 8443
+  port: 1234                         //用于外部LB
+  
+loadbalancer_apiserver_localhost: true  //是否开启内部LB
+nginx_kube_apiserver_port: 8443   //本地内部负载均衡接口，内部LB仅接受客户端连接到本地主机
+}
 
 #cloud_provider:
 kubeadm_enabled: false   //kubeadm使能
