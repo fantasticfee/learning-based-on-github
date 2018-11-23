@@ -1,2 +1,4 @@
 外网访问虚拟机设置：
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport 2222 -j DNAT --to-destination 3.3.3.2:22
+
+疑问：二三层网络及虚拟机的各种模式，网关
