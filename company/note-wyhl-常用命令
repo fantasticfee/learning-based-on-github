@@ -2,3 +2,25 @@
 ssh-keygen -t rsa -C "youremail@example.com"
 登录github。打开setting->SSH keys，点击右上角 New SSH key，
 把生成好的公钥id_rsa.pub放进 key输入框中，再为当前的key起一个title来区分每个key。
+
+二、linux挂载windows共享文件
+问题：[root@x home]# mount -t cifs -o username=zy,password=1qaz2WSX# \\10.93.0.247\ezk8s ./windows
+mount: wrong fs type, bad option, bad superblock on \10.93.0.247ezk8s,
+       missing codepage or helper program, or other error
+       (for several filesystems (e.g. nfs, cifs) you might
+       need a /sbin/mount.<type> helper program)
+
+       In some cases useful info is found in syslog - try
+       dmesg | tail or so.
+解决方法：yum install cifs-utils
+
+重新执行mount命令，遇到问题：
+  mount.cifs: bad UNC (\10.93.0.247ezk8s)
+  
+三、mysql
+问题：启动beego二进制程序，出现error：
+register db Ping `default`, Error 1044: Access denied for user 'test'@'%' to database 'ezk8s'
+解决：
+在mysql服务器上执行：
+GRANT ALL PRIVILEGES ON *.* TO 'test'@'%';
+FLUSH PRIVILEGES;
