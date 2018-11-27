@@ -23,4 +23,6 @@ register db Ping `default`, Error 1044: Access denied for user 'test'@'%' to dat
 解决：
 在mysql服务器上执行：
 GRANT ALL PRIVILEGES ON *.* TO 'test'@'%';
-FLUSH PRIVILEGES;
+
+改密码：update user set password=password("123") where user="root";
+FLUSH PRIVILEGES;(刷新权限，任何涉及权限的操作都要执行此步来生效）
