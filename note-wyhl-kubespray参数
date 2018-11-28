@@ -52,11 +52,11 @@ docker_dns_servers_strict: false  // 若使能，只使用前三的nameserver
 
 docker_iptables_enabled: "false"  //docker daemon 使能iptables
 
-docker_insecure_registries:    //镜像仓库
+docker_insecure_registries:    //镜像仓库，可以使用非认证的方式下载镜像
    - mirror.registry.io
    - 172.19.16.11
 
-docker_registry_mirrors:
+docker_registry_mirrors:           //常用于镜像加速，默认从docker-hub下载，此选项改从公认的网站上下载
    - https://registry.docker-cn.com
    - https://mirror.aliyuncs.com
 
