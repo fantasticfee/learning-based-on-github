@@ -1,7 +1,7 @@
 # 使用kubespray部署kubernetes
 
 ## 简介
-kubespray作为自动化部署k8s集群的一款工具，其本质是一堆ansible的role文件,底层通过ansible的方式自动化安装高可用k8s集群。
+      kubespray作为自动化部署k8s集群的一款工具，其本质是一堆ansible的role文件,底层通过ansible的方式自动化安装高可用k8s集群。
 
 ## 安装准备
 * 1：部署的虚拟机采用centos7发行版本，需要升级内核，因为overlay2要求内核版本4.0以上：
