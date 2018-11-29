@@ -1,54 +1,10 @@
-重新部署k8s
-参考：https://github.com/kubernetes-incubator/kubespray
+#使用kubespray部署kubernetes
 
-1.  准备依赖的组件
-参考https://github.com/gjmzj/kubeasz/blob/master/docs/setup/quickStart.md，把pip的源改成国内源
+##简介
+kubespray作为自动化部署k8s集群的一款工具，其本质是一堆ansible的role文件,底层通过ansible的方式自动化安装高可用k8s集群。
 
-yum install epel-release –y
-
-
-yum install git python-pip -y# pip安装ansible(国内如果安装太慢可以直接用pip阿里云加速)#pip install pip --upgrade#pip install ansible
-
-pip install pip --upgrade -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
-
-pip install --no-cache-dir ansible -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
-
-git clone https://github.com/kubernetes-incubator/kubespray
-
-pip install -r requirements.txt
-出现问题:Cannot uninstall 'requests'. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.
-解决方法：pip install six --upgrade --ignore-installed six
-
-由于镜像使用的是google的，需要翻墙才能下载，所以这里需要修改一些文件中的镜像地址，修改文件如下：
-kubespray/roles/kubernetes-apps/ansible/defaults/main.yml
-kubespray/roles/download/defaults/main.yml
-kubespray/extra_playbooks/roles/download/defaults/main.yml
-inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
-inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
-
-2. 执行部署
-ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root cluster.yml
-
-出现问题：ERROR! no action detected in task. This often indicates a misspelled module name, or incorrect module path.
-原因及解决方法：requirements.txt安装时部分没有安装好，所以依赖没有解决，导致出现这个问题
-检查了下，ansible-modules-hashivault没有安装，直接install会出问题，需要执行下面的命令
-pip install ansible-modules-hashivault --upgrade --ignore-installed ansible-modules-hashivault
-
-继续执行部署，出现错误，docker启动失败：
-fatal: [node2]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
-fatal: [node3]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
-fatal: [node1]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
-查看日志：
-Nov  9 02:47:42 x systemd: Cannot add dependency job for unit docker-storage-setup.service, ignoring: Unit not found.
-Nov  9 02:47:42 x systemd: Starting Docker Application Container Engine...
-Nov  9 02:47:42 x docker: unknown flag: --insecure-registry
-
-原因：目前看起来是安装docker的选项出了问题，默认driver是devicemapper,使能了docker-storage，二devicemapper是需要lvm分区的，新建的虚拟机没有，所有docker启动失败。
-解决方法：driver改用overlay2
-
-建议：了解下docker的几种driver及大概原理，互相比较优缺点
-
-由于overlay2的功能要求内核版本4.0以上，因此升级内核：
+##安装准备
+部署的虚拟机采用centos7发行版本，升级内核，因为overlay2要求内核版本4.0以上：
  在 CentOS 7 上启用 ELRepo 仓库
   rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
   rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
@@ -56,36 +12,98 @@ Nov  9 02:47:42 x docker: unknown flag: --insecure-registry
   yum --disablerepo="*" --enablerepo="elrepo-kernel" list available
  安装内核：
   yum --enablerepo=elrepo-kernel install kernel-lt.x86_64
+  配置启动项，选择新内核，然后重新启动：
+  vim /etc/default/grub
+  GRUB_DEFAULT=0   #<==save改为0
+  grub2-mkconfig -o /boot/grub2/grub.cfg
 
-vim /etc/default/grub
-GRUB_DEFAULT=0   #<==save改为0
-grub2-mkconfig -o /boot/grub2/grub.cfg
-重新启动
+安装太慢可以直接用pip阿里云加速：
+yum install epel-release –y
 
-使用overlay2还是再docker启动部分失败，尝试加入了一个新节点，发现新节点成功了，怀疑老节点之前安装过其他版本docker的原因，有残余配置导致安装的新
-版本的docker一直失败，尝试全部用新节点部署。新节点部署，docker安装成功。
+yum install git python-pip -y
 
-docker安装过后，遇到镜像问题，因为镜像地址是国外google的，还是需要修改镜像地址。
-将需要的镜像push到自己的阿里云仓库上，然后修改脚本中要替换的镜像地址。
+pip install pip --upgrade -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
-使用aliyun镜像：
-docker login --username=fantasticfee registry.cn-hangzhou.aliyuncs.com
-需要替换的镜像：
-pause-amd64
-calico-ctl
-cluster-proportional-autoscaler-amd64
-hyperkube-amd64
-k8s-dns-dnsmasq-nanny-amd64
-k8s-dns-kube-dns-amd64
-k8s-dns-sidecar-amd64
-kube-registry-proxy
-kubernetes-dashboard-amd64
+pip install --no-cache-dir ansible -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
-继续部署，出现apiserver一直没有启动的情况
-启动失败，查看日志docker logs,显示不识别选项。 
-Error: unknown flag: --endpoint-reconciler-type
-查看hyperkube 的版本，还是老版本，而reconciler是个新特性，解决方法，换个新版本的查看hyperkube。
-更换新版本，apiserver果然恢复正常。
+[下载最新的kubespray版本](https://github.com/kubernetes-sigs/kubespray)
+
+##安装步骤
+
+* 1：安装依赖
+sudo pip install -r requirements.txt
+
+* 2：修改inventory输入文档，修改hosts.ini文档和group_vars下的相关变量
+cp -rfp inventory/sample inventory/mycluster
+
+vi inventory/mycluster/hosts.ini
+修改后的host文档如下：
+[all]
+ node1 ansible_host=192.168.122.109   ip=192.168.122.109 etcd_member_name=etcd1
+ node2 ansible_host=192.168.122.102   ip=192.168.122.102 
+ node3 ansible_host=192.168.122.107   ip=192.168.122.107 etcd_member_name=etcd2
+ node4 ansible_host=192.168.122.108  ip=192.168.122.108 etcd_member_name=etcd3
+
+[kube-master]
+ node1
+ node3
+
+[etcd]
+ node1
+
+[kube-node]
+ node2
+ node3
+ node4
+
+[k8s-cluster:children]
+kube-master
+kube-node
+
+由于被墙的原因，gcr开头的镜像都要修改，这里我替换了阿里云的镜像。
+需要修改的文件如下：
+kubespray/roles/kubernetes-apps/ansible/defaults/main.yml
+kubespray/roles/download/defaults/main.yml
+kubespray/extra_playbooks/roles/download/defaults/main.yml
+inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+
+
+* 3：执行部署
+ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root cluster.yml
+
+##问题
+* 1： pip install -r requirements.txt执行出错
+错误信息：Cannot uninstall 'requests'. It is a distutils installed project and thus we cannot accurately determine 
+which files belong to it which would lead to only a partial uninstall.
+解决方法：pip install six --upgrade --ignore-installed six
+
+* 2： 解决完第1个问题，继续执行pip install -r requirements.txt出错
+错误信息：ERROR! no action detected in task. This often indicates a misspelled module name, or incorrect module path.
+解决方法：requirements.txt安装时ansible-modules-hashivault安装出问题，需要执行下面的命令
+pip install ansible-modules-hashivault --upgrade --ignore-installed ansible-modules-hashivault
+
+* 3： 在执行部署时，出现错误，docker启动失败
+问题现象：
+fatal: [node2]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
+fatal: [node3]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
+fatal: [node1]: FAILED! => {"changed": false, "msg": "Unable to start service docker: Job for docker.service failed because the control process exited with error code. See \"systemctl status docker.service\" and \"journalctl -xe\" for details.\n"}
+日志信息：
+Nov  9 02:47:42 x systemd: Cannot add dependency job for unit docker-storage-setup.service, ignoring: Unit not found.
+Nov  9 02:47:42 x systemd: Starting Docker Application Container Engine...
+Nov  9 02:47:42 x docker: unknown flag: --insecure-registry
+
+解决方法：安装docker的选项出了问题，kubespray安装dockers的默认driver是devicemapper,使能了docker-storage，而devicemapper是需要lvm分区的，
+由于新建的centos虚拟机默认没有，所有docker启动失败。
+解决方法：修改kubespray选项，devicemapper改为overlay2
+
+* 4：经过第3个问题的修改，docker启动还是失败
+解决方法：尝试加入了一个新节点，发现新节点成功了，推测老节点之前安装过其他版本docker的原因，有残余配置没有卸载干净，导致docker安装一直失败，
+新节点部署，docker安装成功。
+
+* 5：继续执行部署，出现apiserver一直没有启动的情况，现象一直wait apiserver timeout
+日志信息： Error: unknown flag: --endpoint-reconciler-type
+解决方法：reconciler是个新特性，查看hyperkube 的版本，还是老版本，更换新版本，apiserver果然恢复正常。
 
 
 
