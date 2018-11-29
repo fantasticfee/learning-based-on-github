@@ -1,10 +1,10 @@
-#使用kubespray部署kubernetes
+# 使用kubespray部署kubernetes
 
-##简介
+## 简介
 kubespray作为自动化部署k8s集群的一款工具，其本质是一堆ansible的role文件,底层通过ansible的方式自动化安装高可用k8s集群。
 
-##安装准备
-*1：部署的虚拟机采用centos7发行版本，需要升级内核，因为overlay2要求内核版本4.0以上：
+## 安装准备
+* 1：部署的虚拟机采用centos7发行版本，需要升级内核，因为overlay2要求内核版本4.0以上：
  在 CentOS 7 上启用 ELRepo 仓库
   rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
   rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
@@ -17,7 +17,7 @@ kubespray作为自动化部署k8s集群的一款工具，其本质是一堆ansib
   GRUB_DEFAULT=0   #<==save改为0
   grub2-mkconfig -o /boot/grub2/grub.cfg
 
-*2：安装太慢可以直接用pip阿里云加速：
+* 2：安装太慢可以直接用pip阿里云加速：
 yum install epel-release –y
 
 yum install git python-pip -y
@@ -26,9 +26,9 @@ pip install pip --upgrade -i http://mirrors.aliyun.com/pypi/simple/ --trusted-ho
 
 pip install --no-cache-dir ansible -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
-*3：[下载最新的kubespray版本](https://github.com/kubernetes-sigs/kubespray)
+* 3：[下载最新的kubespray版本](https://github.com/kubernetes-sigs/kubespray)
 
-##安装步骤
+## 安装步骤
 
 * 1：安装依赖
 sudo pip install -r requirements.txt
