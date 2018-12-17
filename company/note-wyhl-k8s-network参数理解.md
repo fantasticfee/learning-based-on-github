@@ -1,5 +1,5 @@
 
-##flannel：
+## flannel：
 
   专门为K8S的跨主机通信提供的一种第三层网络方案，flannle相关的网络配置存储在etcd中，集群内的所有节点都运行flannel，
 flannel有配置一个网络空间，该net分配给每个host一个subnet，subnet分配IP给pod。
@@ -16,7 +16,7 @@ flannel_backend_type参数：vxlan,hosthw等。主要目的是如何转发包到
 flannel将上述过程进行了自动化。
 
 
-##Calico：
+## Calico：
 
   把每个操作系统的协议栈认为是一个路由器，然后把所有的容器认为是连在这个路由器上的网络终端，
   在路由器之间跑标准的路由协议——BGP的协议，然后让它们自己去学习这个网络拓扑该如何转发。
@@ -30,7 +30,7 @@ flannel将上述过程进行了自动化。
   calico_mtu：ipip模式中的mtu
     --ipip ：允许跨子网
     
-##kube-router:
+## kube-router:
 
   为k8s提供了负载分担，取代kube-proxy,整个pod网络的联通。
   着重讲网络：使用bgp，每个host作为一个router，host中的pod看作终端。
@@ -63,7 +63,7 @@ Usage of ./kube-router:
       --run-service-proxy                   启用服务代理 - 为Kubernetes服务设置IPVS。 （默认为true）```
       
       
-  ##etcd
+  ## etcd
   
     --auto-compaction-retention：：历史数据多长时间压缩一次
     --quota-backend-bytes：ETCDdb数据大小，默认是２G,当数据达到２G的时候就不允许写入，必须对历史数据进行压缩才能继续写入
@@ -72,7 +72,7 @@ Usage of ./kube-router:
     etcd_memory_limit：运行内存，默认是4G，若没有4G，可自行设置
    
    
-   # all.yml: 
+   ## all.yml: 
    access_ip:一般为master node ip,更复杂的情况可能代表不同的含义
    
    以下参数用于HA：
