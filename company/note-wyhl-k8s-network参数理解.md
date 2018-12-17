@@ -1,5 +1,6 @@
 
-flannel：
+##flannel：
+
   专门为K8S的跨主机通信提供的一种第三层网络方案，flannle相关的网络配置存储在etcd中，集群内的所有节点都运行flannel，
 flannel有配置一个网络空间，该net分配给每个host一个subnet，subnet分配IP给pod。
 选择哪个对外网卡与subnet绑定
@@ -15,18 +16,22 @@ flannel_backend_type参数：vxlan,hosthw等。主要目的是如何转发包到
 flannel将上述过程进行了自动化。
 
 
-Calico：
+##Calico：
+
   把每个操作系统的协议栈认为是一个路由器，然后把所有的容器认为是连在这个路由器上的网络终端，
   在路由器之间跑标准的路由协议——BGP的协议，然后让它们自己去学习这个网络拓扑该如何转发。
   监听etcd，每有一个新host或新pod，产生对应的虚拟网络设备。
-  peer_with_router： enabling router peering will disable calico's default behavior ('node mesh')
-  nat_outgoing：需要Docker访问外网
-  calico_pool_name：地址池名称
-  global_as_num：bgp中的as总数量
+  
+  peer_with_router： enabling router peering will disable calico's default behavior ('node mesh'),只有在大规模部署或
+  自定义整个拓扑网络时，才会选true
+  nat_outgoing：能够访问ip pool规定网段以外的网址
+  calico_pool_name：ip地址池名称，该资源是ip网段的集合
+  global_as_num：bgp as 全局号
   calico_mtu：ipip模式中的mtu
     --ipip ：允许跨子网
     
-kube-router:
+##kube-router:
+
   为k8s提供了负载分担，取代kube-proxy,整个pod网络的联通。
   着重讲网络：使用bgp，每个host作为一个router，host中的pod看作终端。
   Kube-router监视Kubernetes API服务器以获取服务/端点的更新，并自动同步IPVS配置以反映所需的服务状态。 Kube-router使用IPVS伪装模式
@@ -58,7 +63,8 @@ Usage of ./kube-router:
       --run-service-proxy                   启用服务代理 - 为Kubernetes服务设置IPVS。 （默认为true）```
       
       
-   etcd
+  ##etcd
+  
     --auto-compaction-retention：：历史数据多长时间压缩一次
     --quota-backend-bytes：ETCDdb数据大小，默认是２G,当数据达到２G的时候就不允许写入，必须对历史数据进行压缩才能继续写入
     etcd_peer_client_auth:https使能
