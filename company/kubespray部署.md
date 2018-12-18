@@ -8,6 +8,7 @@
 ## 准备
 
 * 修改镜像脚本
+
 #!/bin/bash
 grc_image_files=(
 ./extra_playbooks/roles/download/defaults/main.yml
@@ -30,4 +31,5 @@ kubeadm_download_url: "https://github.com/fantasticfee/ks-biniary-2.8.0/raw/mast
 hyperkube_download_url: "https://github.com/fantasticfee/ks-biniary-2.8.0/raw/master/hyperkube"
 
 ## 执行部署
+
 ansible-playbook -i inventory/cluster-2/hosts.ini cluster.yml -b -vvv
