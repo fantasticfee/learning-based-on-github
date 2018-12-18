@@ -21,6 +21,7 @@ grc_image_files=(
  for file in ${grc_image_files[@]} ; do
  sed -i 's/gcr.io\/google[_-]containers/registry.cn-hangzhou.aliyuncs.com\/fantasticfee/g' $file
  done
+ 
  执行完此脚本，若还有gcr开头的镜像，就需要自己手动更换了。
  
 * 修改文件roles/download/defaults/main.yml，由于网络原因，修改kubeadm和hyperkube的下载url：
