@@ -52,3 +52,10 @@
 ## 5、vim没有权限保存修改
 
        :w !sudo tee %
+## 6、git上传超过100M文件
+
+Git LFS的官方网址： https://git-lfs.github.com/
+*先安装 Git LFS 的客户端，然后在将要push的仓库里重新打开一个bash命令行： 
+*只需设置1次 LFS : git lfs install
+*跟踪你要push的大文件的文件或指定文件类型 git lfs track "*.pdf"
+*以上已经设置完毕， 其余的工作就是按照正常的 add , commit , push 流程就可以了。
