@@ -101,3 +101,17 @@ kvm虚拟机列表：
  host --------> vnet0--------eth0<---vm1
 如上表，ID会自动增加，name具有唯一性， 删除虚拟机后，再创新创建虚拟机，新虚拟机eth0对应的vnet接口是选择空闲最小的接口，若没有的话则
 新建一个，本次创建虚拟机，每个虚拟机对应宿主机的一个端口，从5900开始，创建好后，需使用iptable引入虚拟机相应的接口，否则vnc连接失败。
+
+snapshot:
+创建虚拟机sunhao-1的快照
+
+virsh snapshot-create sunhao-1
+列出快照
+
+virsh snapshot-list sunhao-1 
+
+恢复快照
+virsh snapshot-revert sunhao-1 指定名称号
+
+删除快照
+virsh snapshot-delete sunhao-1 加指定名称号
