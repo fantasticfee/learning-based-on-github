@@ -115,5 +115,5 @@
 
       日志信息： Error: unknown flag: --endpoint-reconciler-type
       解决方法：reconciler是个新特性，查看hyperkube 的版本，还是老版本，更换新版本，apiserver果然恢复正常。
-
+* 6: The following packages have pending transactions: python2-pip-noarch
 
