@@ -59,3 +59,6 @@ Git LFS的官方网址： https://git-lfs.github.com/
 * 只需设置1次 LFS : git lfs install
 * 跟踪你要push的大文件的文件或指定文件类型 git lfs track "*.pdf"
 * 以上已经设置完毕， 其余的工作就是按照正常的 add , commit , push 流程就可以了。
+ ## 7、window环境编译为linux二进制
+ 
+ GOOS=linux GOARCH=amd64 go build
