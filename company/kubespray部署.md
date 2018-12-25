@@ -34,3 +34,26 @@ hyperkube_download_url: "https://github.com/fantasticfee/ks-biniary-2.8.0/raw/ma
 ## 执行部署
 
 ansible-playbook -i inventory/cluster-2/hosts.ini cluster.yml -b -vvv
+
+## 增加rr配置
+
+* 1、hosts.ini增加主机
+
+* 2、inventory/test/group_vars/all/all.yml文件里添加peers
+
+peers:
+  - router_id: "10.99.0.2"
+    as: "64512"
+  - router_id: "10.99.0.3"
+    as: "64512"
+
+inventory/test/group_vars/k8s-cluster/k8s-net-calico.yml
+peer_with_router: true
+
+## 问题
+
+* 1、增加rr，calico使用bgp  router reflactor部署，其中kube_api_anonymous_auth在部署rr主机时总是false，看起来inventory中的
+变量没有将default中的变量覆盖，导致做preinstall中verify任务时总是失败
+
+
+  
