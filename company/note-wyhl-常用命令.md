@@ -67,3 +67,7 @@ Git LFS的官方网址： https://git-lfs.github.com/
 
 sshpass -p x ssh root@192.168.122.104  -o StrictHostKeyChecking=no
 sshpass -p x ssh-copy-id root@192.168.122.104  -o StrictHostKeyChecking=no
+
+## 9、 查看完整history
+
+docker history image_name --no-trunc=true 
