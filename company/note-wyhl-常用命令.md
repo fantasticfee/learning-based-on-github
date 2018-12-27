@@ -75,3 +75,14 @@ docker history image_name --no-trunc=true
 ## 10、端口映射，用于被外部访问
 
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport 2225 -j DNAT --to-destination 192.168.122.103:8080
+
+## 11、访问etcd
+
+export ETCDCTL_API=2
+export ETCDCTL_API=3
+以上两个语句分别将etcdctl访问的etcd版本调整为2或者3
+获取etcd中存储的所有key：
+etcd2：
+etcdctl ls
+etcd3：
+etcdctl get / --prefix --keys-only
