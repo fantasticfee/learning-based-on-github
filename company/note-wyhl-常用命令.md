@@ -65,4 +65,5 @@ Git LFS的官方网址： https://git-lfs.github.com/
 
 ## 8、 第一次ssh连接省略yes提问
 
+sshpass -p x ssh root@192.168.122.104  -o StrictHostKeyChecking=no
 sshpass -p x ssh-copy-id root@192.168.122.104  -o StrictHostKeyChecking=no
