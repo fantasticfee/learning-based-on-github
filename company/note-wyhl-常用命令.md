@@ -62,3 +62,7 @@ Git LFS的官方网址： https://git-lfs.github.com/
  ## 7、window环境编译为linux二进制
  
  GOOS=linux GOARCH=amd64 go build
+
+## 8、 第一次ssh连接省略yes提问
+
+sshpass -p x ssh-copy-id root@192.168.122.104  -o StrictHostKeyChecking=no
