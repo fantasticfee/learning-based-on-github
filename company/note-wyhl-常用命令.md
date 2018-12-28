@@ -78,7 +78,8 @@ iptables -t nat -A PREROUTING -p tcp -m tcp --dport 2225 -j DNAT --to-destinatio
 
 ## 11、访问etcd
 
-export ETCDCTL_API=2
+
+ export ETCDCTL_API=2
 export ETCDCTL_API=3
 以上两个语句分别将etcdctl访问的etcd版本调整为2或者3
 获取etcd中存储的所有key：
@@ -86,3 +87,4 @@ etcd2：
 etcdctl ls
 etcd3：
 etcdctl get / --prefix --keys-only
+etcdctl --endpoints=https://192.168.122.111:2379 --cacert=/etc/kubernetes/ssl/etcd/ca.pem --key=/etc/kubernetes/ssl/etcd/node-node1-key.pem --cert=/etc/kubernetes/ssl/etcd/node-node1.pem get / --prefix --keys-only
