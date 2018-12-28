@@ -69,7 +69,7 @@ Usage of ./kube-router:
     --quota-backend-bytes：ETCDdb数据大小，默认是２G,当数据达到２G的时候就不允许写入，必须对历史数据进行压缩才能继续写入
     etcd_peer_client_auth:https使能
     etcd_metrics：模式分为基本和扩展
-    etcd_memory_limit：运行内存，默认是4G，若没有4G，可自行设置
+    etcd_memory_limit：运行内存，默认是4G，若没有4G，可自行设置，建议不小于quota-backend-bytes，否则有out of memory的问题
    
    
    ## all.yml: 
