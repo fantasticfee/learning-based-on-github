@@ -88,3 +88,10 @@ etcdctl ls
 etcd3：
 etcdctl get / --prefix --keys-only
 etcdctl --endpoints=https://192.168.122.111:2379 --cacert=/etc/kubernetes/ssl/etcd/ca.pem --key=/etc/kubernetes/ssl/etcd/node-node1-key.pem --cert=/etc/kubernetes/ssl/etcd/node-node1.pem get / --prefix --keys-only
+
+## 12、禁用摄像头
+
+sudo vi /etc/modprobe.d/blacklist.conf
+##Disable webcam.
+blacklist uvcvideo
+然后重启电脑
