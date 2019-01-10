@@ -95,3 +95,8 @@ sudo vi /etc/modprobe.d/blacklist.conf
 ##Disable webcam.
 blacklist uvcvideo
 然后重启电脑
+
+## 13、 抓包
+ 
+tcpdump -i eth0 src host hostname  对源为hostname的主机的通信数据包进行监视
+tcpdump -i eth0 dst host hostname 监视所有送到主机hostname的数据包
