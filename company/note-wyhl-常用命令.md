@@ -100,3 +100,8 @@ blacklist uvcvideo
  
 tcpdump -i eth0 src host hostname  对源为hostname的主机的通信数据包进行监视
 tcpdump -i eth0 dst host hostname 监视所有送到主机hostname的数据包
+
+## 14、 docker批量操作
+
+docker rm `docker ps -a -q` 删除所有容器
+docker rmi `docker images -q` 删除所有镜像
