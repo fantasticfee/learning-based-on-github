@@ -19,7 +19,7 @@
        重新执行mount命令，遇到问题：
          mount.cifs: bad UNC (\10.93.0.247ezk8s)
   
-## 3、mysql
+## 3、mysql修改密码
        问题：启动beego二进制程序，出现error：
        register db Ping `default`, Error 1044: Access denied for user 'test'@'%' to database 'ezk8s'
        解决：
@@ -74,7 +74,8 @@ docker history image_name --no-trunc=true
 
 ## 10、端口映射，用于被外部访问
 
-iptables -t nat -A PREROUTING -p tcp -m tcp --dport 2225 -j DNAT --to-destination 192.168.122.103:8080
+添加：iptables -t nat -A PREROUTING -p tcp -m tcp --dport 2225 -j DNAT --to-destination 192.168.122.103:8080
+删除：将"A"换为"D"
 
 ## 11、访问etcd
 
