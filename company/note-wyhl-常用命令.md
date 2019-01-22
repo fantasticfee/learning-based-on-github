@@ -156,3 +156,13 @@ WantedBy=multi-user.target
 sudo systemctl  daemon-reload
 sudo systemctl  start etcd.service
 ```
+
+## 17、ssh连接太慢
+
+```
+vi /etc/ssh/sshd_config   
+查找GSSAPIAuthentication 赋值为no
+查找UseDNS,赋值为 no(该项默认不启用的，要把前面的#删除掉)
+重启systemctl restart sshd
+```
+
