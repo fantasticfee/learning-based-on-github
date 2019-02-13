@@ -3,6 +3,8 @@
        ssh-keygen -t rsa -C "youremail@example.com"
        登录github。打开setting->SSH keys，点击右上角 New SSH key，
        把生成好的公钥id_rsa.pub放进 key输入框中，再为当前的key起一个title来区分每个key。
+       
+       生成ssh密钥对： ssh-keygen -t rsa
 
 ## 2、linux挂载windows共享文件
 
