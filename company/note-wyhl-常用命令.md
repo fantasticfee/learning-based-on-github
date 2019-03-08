@@ -168,3 +168,14 @@ vi /etc/ssh/sshd_config
 重启systemctl restart sshd
 ```
 
+## 18、centos7 install npm
+```
+curl -sL https://rpm.nodesource.com/setup_6.x  |  bash  - 
+yum install -y nodejs
+npm install npm@latest -g
+rm -rf node_modules/
+npm install
+npm run dev
+npm run build
+```
+
