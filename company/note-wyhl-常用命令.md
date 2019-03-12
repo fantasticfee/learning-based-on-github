@@ -120,6 +120,7 @@ tcpdump -i eth0 dst host hostname 监视所有送到主机hostname的数据包
 ```
 docker rm `docker ps -a -q` 删除所有容器
 docker rmi `docker images -q` 删除所有镜像
+docker rmi `docker images | grep  "<none>" | awk '{print $3}' 删除选择的镜像
 ```
 
 ## 15、 node run dev 错误：vue-service-cli not found
