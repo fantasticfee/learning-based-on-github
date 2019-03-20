@@ -180,3 +180,8 @@ npm run dev
 npm run build
 ```
 
+## 19、kubernetes命令
+···
+kubectl delete pod foo --grace-period=0 --force
+···
+
