@@ -190,3 +190,8 @@ kubectl delete pod foo --grace-period=0 --force
  kubectl run nginx-deploy --image=nginx:1.14-alpine --port=80 --replicas=1    #创建一个nginx的应用，副本数为1
  kubectl expose deployment nginx-deploy --name=nginx --port=80 --target-port=80 --protocol=TCP　　#创建一个nginx的service
 ```
+
+## 21、下载golang tools包
+```
+ go get github.com/golang/tools
+```
