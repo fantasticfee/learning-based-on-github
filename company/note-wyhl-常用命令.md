@@ -195,3 +195,11 @@ kubectl delete pod foo --grace-period=0 --force
 ```
  go get github.com/golang/tools
 ```
+
+## 22、kvm虚拟机扩容
+```
+qemu-img resize centos12.qcow2 +50G #增加硬盘大小
+virsh edit vm-name  #查找cpu和mem修改成对应值
+virsh  setvcpus  ansiblek8s12 8  #设置cpu核数，这是虚拟的
+virsh setmem ansiblek8s12 4096M  #配置内存
+···
