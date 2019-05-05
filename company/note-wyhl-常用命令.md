@@ -202,7 +202,7 @@ qemu-img resize centos12.qcow2 +50G #增加硬盘大小
 virsh edit vm-name  #查找cpu和mem修改成对应值
 virsh  setvcpus  ansiblek8s12 8  #设置cpu核数，这是虚拟的
 virsh setmem ansiblek8s12 4096M  #配置内存
-···
+```
 
 ## 23、ipables日志和链表操作
 ```
@@ -211,3 +211,13 @@ dmesg | grep iptables
 iptables -t nat -I OUTPUT 2 -j chain_name #在output链表的第二条增加链条引用
 iptables -t nat -D OUTPUT 1  #删除链条OUTPUT的第一个引用
 ```
+
+## 24、 git问题
+
+现象： error: RPC failed; curl 18 transfer closed with outstanding read data remaining
+    fatal: The remote end hung up unexpectedly
+    fatal: early EOF
+    fatal: index-pack failed
+ 解决：git config --global http.postBuffer 524288000
+ 下载分支：git fetch origin release-1.13:release-1.13 --depth 1
+
