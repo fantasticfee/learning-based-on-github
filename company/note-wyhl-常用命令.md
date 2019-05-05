@@ -212,7 +212,7 @@ iptables -t nat -I OUTPUT 2 -j chain_name #在output链表的第二条增加链�
 iptables -t nat -D OUTPUT 1  #删除链条OUTPUT的第一个引用
 ```
 
-## 24、 git问题
+## 24、 git因仓库太大导致的下载问题
 
 现象： error: RPC failed; curl 18 transfer closed with outstanding read data remaining
     fatal: The remote end hung up unexpectedly
@@ -220,4 +220,5 @@ iptables -t nat -D OUTPUT 1  #删除链条OUTPUT的第一个引用
     fatal: index-pack failed
  解决：git config --global http.postBuffer 524288000
  下载分支：git fetch origin release-1.13:release-1.13 --depth 1
+ 或者git clone -b v0.99 --depth 1 https://github.com/git/git.git
 
