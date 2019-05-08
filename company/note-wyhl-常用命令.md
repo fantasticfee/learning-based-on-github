@@ -222,3 +222,8 @@ iptables -t nat -D OUTPUT 1  #删除链条OUTPUT的第一个引用
  下载分支：git fetch origin release-1.13:release-1.13 --depth 1
  或者git clone -b v0.99 --depth 1 https://github.com/git/git.git
 
+## 25、 安装nodejs
+···
+curl -sL https://rpm.nodesource.com/setup_5.x  |  bash  -  
+yum install -y nodejs
+···
