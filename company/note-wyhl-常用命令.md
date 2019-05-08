@@ -229,4 +229,6 @@ nvm --version  #证明安装成功
 nvm install node
 rm -rf node_modules #若出错，删除老的文件夹
 npm install
+npm run dev #运行在本地环境
+npm run build #用于生产环境
 ```
