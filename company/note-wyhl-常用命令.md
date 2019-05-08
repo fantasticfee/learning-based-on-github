@@ -226,4 +226,5 @@ iptables -t nat -D OUTPUT 1  #删除链条OUTPUT的第一个引用
 ```
 curl -sL https://rpm.nodesource.com/setup_5.x  |  bash  -  
 yum install -y nodejs
+npm install
 ```
