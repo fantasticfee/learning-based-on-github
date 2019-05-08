@@ -224,7 +224,9 @@ iptables -t nat -D OUTPUT 1  #删除链条OUTPUT的第一个引用
 
 ## 25、 安装nodejs
 ```
-curl -sL https://rpm.nodesource.com/setup_5.x  |  bash  -  
-yum install -y nodejs
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+nvm --version  #证明安装成功
+nvm install node
+rm -rf node_modules #若出错，删除老的文件夹
 npm install
 ```
