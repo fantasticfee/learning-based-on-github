@@ -225,10 +225,11 @@ iptables -t nat -D OUTPUT 1  #删除链条OUTPUT的第一个引用
 ## 25、 安装nodejs
 ```
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+#终端会有提示说你可以重启终端或者执行以下语句使 nvm 可用，我尝试过重启，nvm 并没有配置好，所以还是需要将给出的提示命令全部复制执行一下
 nvm --version  #证明安装成功
 nvm install node
 rm -rf node_modules #若出错，删除老的文件夹
-npm install
+npm install  
 npm run dev #运行在本地环境
 npm run build #用于生产环境
 ```
