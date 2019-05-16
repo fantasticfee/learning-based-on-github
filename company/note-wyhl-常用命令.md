@@ -238,3 +238,8 @@ npm run build #用于生产环境
 ```
 du -am | sort -nr | head -n 10
 ```
+
+## 27、 更新mysql
+```
+ update host SET status=9 where id=39;
+```
