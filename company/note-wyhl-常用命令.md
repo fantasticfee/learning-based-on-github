@@ -233,3 +233,8 @@ npm install
 npm run dev #运行在本地环境
 npm run build #用于生产环境
 ```
+
+## 26、 查找最大目录
+```
+du -am | sort -nr | head -n 10
+```
