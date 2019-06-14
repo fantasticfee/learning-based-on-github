@@ -243,3 +243,9 @@ du -am | sort -nr | head -n 10
 ```
  update host SET status=9 where id=39;
 ```
+## 28、 helm本地仓库搭建（前提，在kubernetes集群中已安装helm）
+```
+helm repo default path: /root/.helm/repository/local
+helm creat mychart     #创建默认nginx应用
+helm serve --address 172.31.23.109:8879 --repo-path /root/.helm/repository/local  #启动server端
+```
