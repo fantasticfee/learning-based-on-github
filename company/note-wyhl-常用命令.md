@@ -249,3 +249,14 @@ helm repo default path: /root/.helm/repository/local
 helm creat mychart     #创建默认nginx应用
 helm serve --address 172.31.23.109:8879 --repo-path /root/.helm/repository/local  #启动server端
 ```
+
+## 29、 win10 关闭Hyper-V
+```
+1、以管理员的身份运行“CMD”；
+
+2、输入命令“bcdedit /copy {current} /d “Windows10 no Hyper-V”；
+
+3、输入命令“bcdedit /set {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} hypervisorlaunchtype OFF”，然后重启电脑。
+将第2步运行后的命令出现在{}里的序列号替换第3步{}里的“XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX”。
+
+```
