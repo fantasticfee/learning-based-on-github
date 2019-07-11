@@ -266,3 +266,13 @@ helm serve --address 172.31.23.109:8879 --repo-path /root/.helm/repository/local
 1、配置共享文件为固定分配，自动挂载，注意共享名与要被挂载的目录不要同名，否则，后续mount会出错
 2、mount -t vboxsf share /home/zy/gocode/src
 ```
+## 31、linux shdowsocks客户端配置及privoxy安装
+```
+sudo apt install shadowsocks
+sslocal -s 11.22.33.44 -p 25003 -k 123456 -l 1080 -t 600 -m aes-256-cfb
+sudo apt install privoxy
+vim /etc/privoxy/config
+ forward-socks5t   /               127.0.0.1:1080 .
+ listen-address  127.0.0.1:1081
+ start privoxy
+```
