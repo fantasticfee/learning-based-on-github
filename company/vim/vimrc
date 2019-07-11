@@ -1,0 +1,25 @@
+colorscheme evening
+
+set fileformats=unix
+set shiftwidth=1
+set nu
+set hlsearch
+
+set nocompatible
+set relativenumber
+nnoremap k gk
+nnoremap gk k
+nnoremap j gj
+nnoremap gj j
+
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'fatih/vim-go'
+
+call vundle#end()
+filetype plugin indent on
+
+let mapleader = ","
+"au BufRead,BufNewFile *.go set filetype=go
