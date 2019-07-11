@@ -274,5 +274,5 @@ sudo apt install privoxy
 vim /etc/privoxy/config
  forward-socks5t   /               127.0.0.1:1080 .
  listen-address  127.0.0.1:1081
- start privoxy
+修改完配置启动 privoxy
 ```
