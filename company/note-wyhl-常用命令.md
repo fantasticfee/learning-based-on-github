@@ -260,3 +260,9 @@ helm serve --address 172.31.23.109:8879 --repo-path /root/.helm/repository/local
 将第2步运行后的命令出现在{}里的序列号替换第3步{}里的“XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX”。
 
 ```
+
+## 30、virtualbox共享文件配置
+```
+1、配置共享文件为固定分配，自动挂载，注意共享名与要被挂载的目录不要同名，否则，后续mount会出错
+2、mount -t vboxsf share /home/zy/gocode/src
+```
