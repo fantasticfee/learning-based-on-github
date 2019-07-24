@@ -276,3 +276,12 @@ vim /etc/privoxy/config
  listen-address  127.0.0.1:1081
 修改完配置启动 privoxy
 ```
+
+## 31、ubuntu 修改网卡名称为eth0
+```
+vi /etc/default/grub
+在GRUB_CMDLINE_LINUX=后面添加"net.ifnames=0 biosdevname=0"
+grub-mkconfig -o /boot/grub/grub.cfg
+vi /etc/network/interfaces
+将对应网卡修改为eth0
+```
