@@ -285,3 +285,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 vi /etc/network/interfaces
 将对应网卡修改为eth0
 ```
+
+## 32、安装ping命令
+```
+apt-get install iputils-ping
+```
