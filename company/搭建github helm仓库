@@ -1,0 +1,11 @@
+1、参考 官方文档 安装 Helm 客户端。
+2、打开命令行工具，初始化 Helm 客户端：
+helm init --client-only --upgrade -i registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.12.0 --stable-repo-url http://mirror.azure.cn/kubernetes/charts/
+3、github上创建helm-repo-example仓库并下载，cd helm-repo-example
+创建应用，默认是nginx
+helm create mychart
+打包应用：
+helm package mychart
+生成索引文件：
+helm repo index .
+应用管理可添加应用仓库：	https://github.com/fantasticfee/helm-repo-example/raw/master/
