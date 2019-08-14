@@ -290,3 +290,11 @@ vi /etc/network/interfaces
 ```
 apt-get install iputils-ping
 ```
+
+## 33、go get因网络原因下载不了go相关包,使用gom
+
+```
+go get github.com/gpmgo/gopm
+gopm get -g -v golang.org/x/tools/cmd/goimports
+go install golang.org/x/tools/cmd/goimports
+```
