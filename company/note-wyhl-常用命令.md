@@ -298,3 +298,8 @@ go get github.com/gpmgo/gopm
 gopm get -g -v golang.org/x/tools/cmd/goimports
 go install golang.org/x/tools/cmd/goimports
 ```
+
+## 34、git撤销第一次commit
+```
+git update-ref -d HEAD
+```
