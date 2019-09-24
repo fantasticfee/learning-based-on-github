@@ -303,3 +303,7 @@ go install golang.org/x/tools/cmd/goimports
 ```
 git update-ref -d HEAD
 ```
+## 35、批量删除Evicted pod
+```
+kubectl get pods -n p-dkgkj-pipeline | grep Evicted | awk '{print $1}' | xargs kubectl delete pod -n p-dkgkj-pipeline
+```
