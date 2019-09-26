@@ -307,3 +307,7 @@ git update-ref -d HEAD
 ```
 kubectl get pods -n p-dkgkj-pipeline | grep Evicted | awk '{print $1}' | xargs kubectl delete pod -n p-dkgkj-pipeline
 ```
+## 36、临时设置时间
+···
+date -s "2019-9-26 10:14:00"
+···
