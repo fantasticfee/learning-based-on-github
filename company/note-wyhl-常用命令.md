@@ -311,3 +311,8 @@ kubectl get pods -n p-dkgkj-pipeline | grep Evicted | awk '{print $1}' | xargs k
 ···
 date -s "2019-9-26 10:14:00"
 ···
+
+## 37、helm 使用阿里云仓库初始化
+```
+helm init --upgrade -i registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.9.0 --stable-repo-url https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+```
