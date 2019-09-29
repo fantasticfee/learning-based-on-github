@@ -316,3 +316,9 @@ date -s "2019-9-26 10:14:00"
 ```
 helm init --upgrade -i registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.9.0 --stable-repo-url https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
 ```
+
+## 38、helm 包在创建其他resource之前先创建crd
+```
+annotations:
+    "helm.sh/hook": crd-install
+```
