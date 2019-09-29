@@ -322,3 +322,10 @@ helm init --upgrade -i registry.cn-hangzhou.aliyuncs.com/google_containers/tille
 annotations:
     "helm.sh/hook": crd-install
 ```
+
+## 39、docker无权限删除容器，查看日志： apparmor=“DENIED” operation=“signal” profile=“docker-default” pid=20728 comm=“docker-containe” requested_mask=“receive” denied_mask=“receive” signal=kill peer=“unconfined”
+解决方法：
+```
+systemctl disable apparmor.service --now
+Unload AppArmor profiles: sudo service apparmor teardown
+```
