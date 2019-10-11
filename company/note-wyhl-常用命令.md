@@ -307,10 +307,15 @@ git update-ref -d HEAD
 ```
 kubectl get pods -n p-dkgkj-pipeline | grep Evicted | awk '{print $1}' | xargs kubectl delete pod -n p-dkgkj-pipeline
 ```
-## 36、临时设置时间
-···
+## 36、校对时间
+```
+临时设置：
 date -s "2019-9-26 10:14:00"
-···
+永久配置：
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ ntpdate cn.pool.ntp.org
+ hwclock -w 然后重启，否则后续可能还会出问题
+```
 
 ## 37、helm 使用阿里云仓库初始化
 ```
