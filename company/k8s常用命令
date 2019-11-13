@@ -1,2 +1,11 @@
-kubernates删除pod一直处于terminating状态
+##1、强制删除一直处于terminating状态的pod
+```
 kubectl delete pods --all --grace-period=0 –force 强制删除
+```
+
+##2、根据sa信息导出对应secret的token
+```
+kubectl create serviceaccount kubeapps-operator
+kubectl create clusterrolebinding kubeapps-operator --clusterrole=cluster-admin --serviceaccount=default:kubeapps-operator
+kubectl get secret $(kubectl get serviceaccount kubeapps-operator -o jsonpath='{range .secrets[*]}{.name}{"\n"}{end}' | grep kubeapps-operator-token) -o jsonpath='{.data.token}' -o go-template='{{.data.token | base64decode}}' && echo
+```
