@@ -334,3 +334,7 @@ annotations:
 systemctl disable apparmor.service --now
 Unload AppArmor profiles: sudo service apparmor teardown
 ```
+## 40、查找docker日志
+```
+docker inspect --format='{{.LogPath}}' containername
+```
