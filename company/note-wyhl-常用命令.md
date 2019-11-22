@@ -338,3 +338,9 @@ Unload AppArmor profiles: sudo service apparmor teardown
 ```
 docker inspect --format='{{.LogPath}}' containername
 ```
+
+## 41、证书pem转crt，key
+```
+ openssl rsa -in privkey.pem -out privkey.key  
+ openssl x509 -in fullchain.pem -out fullchain.crt 
+```
