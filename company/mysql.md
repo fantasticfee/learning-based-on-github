@@ -12,6 +12,7 @@
   
   ## 1、mysql不设置密码
   ```
+  注意在需要同版本MySQL之间迁移数据的情况下，使用之间拷贝目录的方式，需要记住当前数据库的root密码，因为root密码是写进数据里面的
   mysql的后缀为cnf的配置文件配置如下：
       [mysqld]
     skip-host-cache
