@@ -9,3 +9,17 @@
   8. ALTER声明中有语法错误
  
   转载：https://blog.csdn.net/wangpeng047/article/details/19624351 
+  
+  ## 1、mysql不设置密码
+  ```
+  mysql的后缀为cnf的配置文件配置如下：
+      [mysqld]
+    skip-host-cache
+    skip-name-resolve
+    skip-grant-tables
+  ```
+  
+  ## 2、mysql 5.7 修改root密码
+  ```
+  update user set authentication_string=password('a@123') where user='root';
+  ```
