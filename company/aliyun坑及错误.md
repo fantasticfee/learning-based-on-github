@@ -10,3 +10,8 @@ dnsPolicy: None
         nameservers:
         - 223.6.6.6
 ````
+
+## 3、部署alicloud virtual-kubelet  报错clusterId是空的？
+```
+
+```
