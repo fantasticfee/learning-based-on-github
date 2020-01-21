@@ -344,3 +344,10 @@ docker inspect --format='{{.LogPath}}' containername
  openssl rsa -in privkey.pem -out privkey.key  
  openssl x509 -in fullchain.pem -out fullchain.crt 
 ```
+## 42、ubuntu public key error
+```
+现象：
+W: GPG error: http://archive.ubuntukylin.com trusty Release: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY D259B7555E1D3C58
+解决方法：
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D259B7555E1D3C58 
+```
