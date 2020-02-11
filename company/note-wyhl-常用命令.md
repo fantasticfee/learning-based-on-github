@@ -351,3 +351,13 @@ W: GPG error: http://archive.ubuntukylin.com trusty Release: The following signa
 解决方法：
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D259B7555E1D3C58 
 ```
+
+## 43、ununtu install doker-ce
+```
+apt-get update
+apt-get install apt-transport-https ca-certificates curl software-properties-common -y 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt-get update
+apt-get install docker-ce -y
+```
