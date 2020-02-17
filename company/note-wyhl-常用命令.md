@@ -361,3 +361,10 @@ add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(
 apt-get update
 apt-get install docker-ce -y
 ```
+
+## 44、chrome https不能访问，需要clear chrome hsts
+```
+chrome://net-internals/#hsts
+Query HSTS/PKP domain中输入域名，可以看到对应的信息
+需要在Delete domain security policies中输入域名，清除域名信息
+```
