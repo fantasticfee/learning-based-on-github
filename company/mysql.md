@@ -23,4 +23,17 @@
   ## 2、mysql 5.7 修改root密码
   ```
   update user set authentication_string=password('a@123') where user='root';
+  update user set password=password(“123”) where user=”root”;
   ```
+  
+  ## 3、wordpress(包括mariadb）迁移数据
+ ```
+ 原以为直接把数据目录拷贝过来就可以，没想到出错了，报错现象，mariadb直接无法启动，日志报错：
+ table xxxxx doesn't exist in engine
+ 将ib_logfile*文件移出数据目录，可以正常启动，并自动生成ib_logfile*文件，可以推测ibdata1文件是
+ 真正的数据文件；
+ wordpress前端界面无法修改文件，报错wordpress.table_name not exist,
+ 使用mysqlcheck -u root -p database_name;发现部分table可以部分不行，区别是文件权限不同，
+ 需要进入mariadb数据wordpress目录，对想以table文件从原来的-rw-r-r--修改为 -rw-rw-r--，即执行
+ chmod 660 table文件；然后重新启动pod就可以正常运行了
+ ```
