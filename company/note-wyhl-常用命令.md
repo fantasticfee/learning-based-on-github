@@ -368,3 +368,29 @@ chrome://net-internals/#hsts
 Query HSTS/PKP domain中输入域名，可以看到对应的信息
 需要在Delete domain security policies中输入域名，清除域名信息
 ```
+
+## 45、设置时区及ntp时间同步
+```
+apt install -y ntp 或 yum install -y ntp  //安装ntp
+ntp server：
+修改ntp.conf:    
+添加 server 120.24.166.46   //aliyun ntp时间
+server 127.127.1.0   //本地时间
+
+ntp client:
+修改ntp.conf:
+添加 server ntp-server_ip
+
+on ntp server or client all need to restart service：
+systemctl restart ntp  #ubuntu重启ntp服务
+systemctl enable ntpd
+systemctl restart ntpd //centos重启ntp服务
+
+//设置时区
+date -R   //查看当前系统时区
+timedatectl status  //查看系统时间方面的各种状态
+timedatectl list-timezones # 列出所有时区
+timedatectl set-local-rtc 1 # 将硬件时钟调整为与本地时钟一致, 0 为设置为 UTC 时间
+timedatectl set-timezone Asia/Shanghai # 设置系统时区为上海
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+```
