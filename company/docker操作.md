@@ -5,17 +5,25 @@ systemctl start docker
 systemctl enable docker
 
 install docker-ce
-首先保证能够访问Docker仓库地址：https://download.docker.com/linux/ubuntu
+ubuntu:
 apt update
-apt install apt-transport-https ca-certificates curl software-properties-common
+apt-get install apt-transport-https ca-certificates curl software-properties-common -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt-get update
+apt-get install docker-ce -y
 
-在/etc/apt/sources.list.d/docker.list文件中添加下面内容
-deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
-
-添加秘钥
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-安装docker-ce
-apt install docker-ce
+centos:
+yum remove docker \
+                  docker-common \
+                  docker-selinux \
+                  docker-engine
+yum install -y yum-utils
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+yum install docker-ce -y
+systemctl start docker
+systemctl enable docker
 
  ```
