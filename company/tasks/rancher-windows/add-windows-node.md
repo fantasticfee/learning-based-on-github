@@ -9,3 +9,38 @@
 3.在windows上docker pull非常慢,由于使用的是脚本方式安装的docker ee,没有图形界面配置registry mirror用于镜像加速,
 所以速度非常慢
 ```
+
+## 2. 阿里云windows server 2019 安装docker ee过程
+```
+参考：https://docs.docker.com/ee/docker-ee/windows/docker-ee/
+这里需要注意：对于不同的windows版本，下面的命令不一定能够执行
+Invoke-WebRequest -UseBasicParsing -OutFile docker-19.03.5.zip https://download.docker.com/components/engine/windows-server/19.03/docker-19.03.5.zip
+# Stop Docker service
+Stop-Service docker
+
+# Extract the archive.
+Expand-Archive docker-19.03.5.zip -DestinationPath $Env:ProgramFiles -Force
+
+# Clean up the zip file.
+Remove-Item -Force docker-19.03.5.zip
+
+# Install Docker. This requires rebooting.
+$null = Install-WindowsFeature -Name containers
+
+# Add Docker to the path for the current session.
+$env:path += ";$env:ProgramFiles\docker"
+
+# Optionally, modify PATH to persist across sessions.
+$newPath = "$env:ProgramFiles\docker;" +
+[Environment]::GetEnvironmentVariable("PATH",
+[EnvironmentVariableTarget]::Machine)
+
+[Environment]::SetEnvironmentVariable("PATH", $newPath,
+[EnvironmentVariableTarget]::Machine)
+
+# Register the Docker daemon as a service.
+dockerd --register-service
+
+# Start the Docker service.
+Start-Service docker
+```
