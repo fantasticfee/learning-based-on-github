@@ -44,3 +44,11 @@ dockerd --register-service
 # Start the Docker service.
 Start-Service docker
 ```
+
+## 3. rancher windows问题记录
+```
+1. 开启监控，部署在window node的exporter未知原因无法启动，windows节点的cpu较高，
+变化从50%~100%；
+2. 试图规避1问题，重启windows机器，发现exporter启动成功，cpu也不是很高，但exporter日志中还是显示service失败了，
+node指标无法获取，
+```
