@@ -1,0 +1,98 @@
+## 1、部署主备环境，在主环境挂掉的情况下，能主动切换到备环境；而在主环境正常后，能够切换回来，下面以Nginx为例子
+
+```
+apt-get install keepalived //安装keepalived
+apt-get install nginx  //安装nginx
+
+ifconfig ens33:0 172.16.130.150 netmask 255.255.255.0  //添加虚ip
+需要机器重启后生效，在/etc/network/interfaces文件中添加：
+//主服务器
+auto ens33:0  
+iface ens33:0 inet static  
+name Ethernet alias LAN card  
+address 172.16.130.150
+netmask 255.255.255.0
+broadcast 172.16.130.255
+network 172.16.130.0
+
+/etc/init.d/networking restart  //重启网络
+
+
+/etc/keepalived/keepalived.conf添加配置：
+global_defs {
+   notification_email {
+
+   }
+}
+
+vrrp_script chk_nginx {
+    script "/etc/keepalived/check_nginx.sh"
+    interval 2                    # 每2s检查一次
+    weight -5                     # 检测失败（脚本返回非0）则优先级减少5个值
+    fall 3                        # 如果连续失败次数达到此值，则认为服务器已down
+    rise 2                        # 如果连续成功次数达到此值，则认为服务器已up，但不修改优先级
+}
+
+vrrp_instance VI_1 {              # 实例名称
+    state MASTER                  # 可以是MASTER或BACKUP，不过当其他节点keepalived启动时会自动将priority比较大的节点选举为MASTER
+    interface ens33                # 节点固有IP（非VIP）的网卡，用来发VRRP包做心跳检测
+    virtual_router_id 51          # 虚拟路由ID,取值在0-255之间,用来区分多个instance的VRRP组播,同一网段内ID不能重复;主备必须为一样
+    priority 100                  # 权重，主服务器要比备服务器高
+    advert_int 1                  # 检查间隔默认为1秒,即1秒进行一次master选举(可以认为是健康查检时间间隔)
+    authentication {              # 认证区域,认证类型有PASS和HA（IPSEC）,推荐使用PASS(密码只识别前8位)
+        auth_type PASS            # 默认是PASS认证
+        auth_pass 1111            # PASS认证密码
+    }
+    virtual_ipaddress {
+        172.16.130.150           # 虚拟VIP地址,允许多个,一行一个
+    }
+    track_script {                # 引用VRRP脚本，即在 vrrp_script 部分指定的名字。定期运行它们来改变优先级，并最终引发主备切换。
+        chk_nginx          
+    }                
+}
+
+//备服务器
+global_defs {
+   notification_email {
+
+   }
+}
+
+vrrp_script chk_nginx {
+    script "/etc/keepalived/check_nginx.sh"
+    interval 2                    # 每2s检查一次
+    weight -5                     # 检测失败（脚本返回非0）则优先级减少5个值
+    fall 3                        # 如果连续失败次数达到此值，则认为服务器已down
+    rise 2                        # 如果连续成功次数达到此值，则认为服务器已up，但不修改优先级
+}
+
+vrrp_instance VI_1 {              # 实例名称
+    state BACKUP                  # 可以是MASTER或BACKUP，不过当其他节点keepalived启动时会自动将priority比较大的节点选举为MASTER
+    interface ens33                # 节点固有IP（非VIP）的网卡，用来发VRRP包做心跳检测
+    virtual_router_id 51          # 虚拟路由ID,取值在0-255之间,用来区分多个instance的VRRP组播,同一网段内ID不能重复;主备必须为一样
+    priority 50                   # 权重，主服务器要比备服务器高
+    advert_int 1                  # 检查间隔默认为1秒,即1秒进行一次master选举(可以认为是健康查检时间间隔)
+    authentication {              # 认证区域,认证类型有PASS和HA（IPSEC）,推荐使用PASS(密码只识别前8位)
+        auth_type PASS            # 默认是PASS认证
+        auth_pass 1111            # PASS认证密码
+    }
+    virtual_ipaddress {
+        172.16.130.150           # 虚拟VIP地址,允许多个,一行一个
+    }
+    track_script {                # 引用VRRP脚本，即在 vrrp_script 部分指定的名字。定期运行它们来改变优先级，并最终引发主备切换。
+        chk_nginx          
+    }                
+}
+
+// /etc/keepalived/check_nginx.sh（主备切换脚本）（主备机器都要有）
+#!/bin/bash  
+#代码一定注意空格，逻辑就是：如果nginx进程不存在则启动nginx,如果nginx无法启动则kill掉keepalived所有进程  
+A=`ps -C nginx --no-header | wc -l`  
+if [ $A -eq 0 ];then  
+  /etc/init.d/nginx start  
+  sleep 3  
+  if [ `ps -C nginx --no-header | wc -l` -eq 0 ];then  
+    killall keepalived  
+  fi  
+fi  
+```
