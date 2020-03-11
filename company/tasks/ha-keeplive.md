@@ -5,8 +5,8 @@ apt-get install keepalived //安装keepalived
 apt-get install nginx  //安装nginx
 
 ifconfig ens33:0 172.16.130.150 netmask 255.255.255.0  //添加虚ip
-需要机器重启后生效，在/etc/network/interfaces文件中添加：
-//主服务器
+若需要机器重启后生效，在/etc/network/interfaces文件中添加：
+
 auto ens33:0  
 iface ens33:0 inet static  
 name Ethernet alias LAN card  
@@ -19,6 +19,7 @@ network 172.16.130.0
 
 
 /etc/keepalived/keepalived.conf添加配置：
+//主服务器
 global_defs {
    notification_email {
 
