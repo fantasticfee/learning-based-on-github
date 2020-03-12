@@ -4,6 +4,9 @@
 apt-get install keepalived //安装keepalived
 apt-get install nginx  //安装nginx
 
+下面大括号中是不要的，添加在这里是提醒自己，这是一个错误的示范，
+只需要安装keeplived就足够了，虚ip还随着keeplived的启动状态，从主漂到备；
+{
 ifconfig ens33:0 172.16.130.150 netmask 255.255.255.0  //添加虚ip
 若需要机器重启后生效，在/etc/network/interfaces文件中添加：
 
@@ -16,6 +19,7 @@ broadcast 172.16.130.255
 network 172.16.130.0
 
 /etc/init.d/networking restart  //重启网络
+}
 
 
 /etc/keepalived/keepalived.conf添加配置：
@@ -85,7 +89,7 @@ vrrp_instance VI_1 {              # 实例名称
     }                
 }
 
-// /etc/keepalived/check_nginx.sh（主备切换脚本）（主备机器都要有）
+// /etc/keepalived/check_nginx.sh（主备切换脚本，这里根据实际需要切换）（主备机器都要有）
 #!/bin/bash  
 #代码一定注意空格，逻辑就是：如果nginx进程不存在则启动nginx,如果nginx无法启动则kill掉keepalived所有进程  
 A=`ps -C nginx --no-header | wc -l`  
@@ -96,4 +100,7 @@ if [ $A -eq 0 ];then
     killall keepalived  
   fi  
 fi  
+
+//设置keepalived开机自启
+update-rc.d keepalived defaults
 ```
