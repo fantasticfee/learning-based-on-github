@@ -1,4 +1,4 @@
-## 以mysql为例,创建一个典型的主从mysql集群
+## 以mysql为例,创建一个典型的主从mysql集群;(yaml文件参考statefulset-test目录)
 ```
 具体场景:
 1.是一个“主从复制”（Maser-Slave Replication）的 MySQL 集群；
