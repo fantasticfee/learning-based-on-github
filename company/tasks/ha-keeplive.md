@@ -104,3 +104,11 @@ fi
 //设置keepalived开机自启
 update-rc.d keepalived defaults
 ```
+
+## 2. keeplived容器版本
+```
+参考 https://github.com/osixia/docker-keepalived
+modprobe ip_vs
+//将主备配置文件放到/opt/keeplived目录下
+docker run -itd  --name keepalived --cap-add=NET_ADMIN --net host -v /opt/keeplived/keeplived.conf:/container/service/keepalived/assets/keepalived.conf osixia/keepalived --copy-service
+```
