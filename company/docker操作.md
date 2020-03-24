@@ -36,4 +36,5 @@ cat << EOF > /etc/docker/daemon.json
   "registry-mirrors": ["https://zrduw2by.mirror.aliyuncs.com"]
 }
 EOF
+systemctl reload docker
  ```
