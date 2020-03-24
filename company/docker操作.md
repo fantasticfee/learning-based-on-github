@@ -26,4 +26,14 @@ yum install docker-ce -y
 systemctl start docker
 systemctl enable docker
 
+//配置docker镜像加速，log限制大小
+cat << EOF > /etc/docker/daemon.json
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "200m"
+  },
+  "registry-mirrors": ["https://zrduw2by.mirror.aliyuncs.com"]
+}
+EOF
  ```
