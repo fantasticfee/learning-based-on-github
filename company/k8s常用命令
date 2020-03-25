@@ -9,3 +9,16 @@ kubectl create serviceaccount kubeapps-operator
 kubectl create clusterrolebinding kubeapps-operator --clusterrole=cluster-admin --serviceaccount=default:kubeapps-operator
 kubectl get secret $(kubectl get serviceaccount kubeapps-operator -o jsonpath='{range .secrets[*]}{.name}{"\n"}{end}' | grep kubeapps-operator-token) -o jsonpath='{.data.token}' -o go-template='{{.data.token | base64decode}}' && echo
 ```
+
+##3、kubeclt调试
+```
+kubectl get resource --watch=true //使用了长连接
+--v=0 	总是对操作人员可见。
+--v=1 	合理的默认日志级别，如果您不需要详细输出。
+--v=2 	可能与系统的重大变化相关的，有关稳定状态的信息和重要的日志信息。这是对大多数系统推荐的日志级别。
+--v=3 	有关更改的扩展信息。
+--v=4 	调试级别详细输出。
+--v=6 	显示请求的资源。
+--v=7 	显示HTTP请求的header。
+--v=8 	显示HTTP请求的内容。
+```
