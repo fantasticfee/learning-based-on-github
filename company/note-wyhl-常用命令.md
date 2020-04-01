@@ -394,3 +394,13 @@ timedatectl set-local-rtc 1 # 将硬件时钟调整为与本地时钟一致, 0 �
 timedatectl set-timezone Asia/Shanghai # 设置系统时区为上海
 cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 ```
+
+## 46. 配置deployment command死循环
+```
+ containers:
+      - command:
+        - /bin/sh
+        - -c
+        - while true;do curl http://java:8081/harvestingResources/getIpRange;sleep
+          6000;done
+```
