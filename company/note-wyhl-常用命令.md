@@ -127,15 +127,6 @@ docker rmi `docker images | grep  "<none>" | awk '{print $3}' 删除选择的镜
 
 确认为版本问题，具体要结合当前环境
 ```
-删除当前环境所有npm版本：
-sudo apt --auto-remove purge npm
-sudo apt --auto-remove purge nodejs
-执行npm 和node命令再次确认，如果相应路径还是存在，手动删除：
-sudo rm -rf /usr/local/bin/npm /usr/local/share/man/man1/node* /usr/local/lib/dtrace/node.d ~/.npm ~/.node-gyp /opt/local/bin/node opt/local/include/node /opt/local/lib/node_modules      
-sudo rm -rf /usr/local/lib/node*  
-sudo rm -rf /usr/local/include/node*                                                                         
-sudo rm -rf /usr/local/bin/node*                                                                                
-
 npm i -g npm@5.0.0
 npm install
 npm run build
@@ -179,8 +170,22 @@ vi /etc/ssh/sshd_config
 重启systemctl restart sshd
 ```
 
-## 18、centos7 install npm
+## 18、remove old npm version and install new version npm
 ```
+删除当前环境所有npm版本：
+sudo apt --auto-remove purge npm
+sudo apt --auto-remove purge nodejs
+执行npm 和node命令再次确认，如果相应路径还是存在，手动删除：
+sudo rm -rf /usr/local/bin/npm /usr/local/share/man/man1/node* /usr/local/lib/dtrace/node.d ~/.npm ~/.node-gyp /opt/local/bin/node opt/local/include/node /opt/local/lib/node_modules      
+sudo rm -rf /usr/local/lib/node*  
+sudo rm -rf /usr/local/include/node*                                                                         
+sudo rm -rf /usr/local/bin/node*   
+
+ubuntu安装新npm：
+curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+centos安装npm：
 curl -sL https://rpm.nodesource.com/setup_6.x  |  bash  - 
 yum install -y nodejs
 npm install npm@latest -g
