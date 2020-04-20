@@ -126,7 +126,17 @@ docker rmi `docker images | grep  "<none>" | awk '{print $3}' 删除选择的镜
 ## 15、 node run dev 错误：vue-service-cli not found
 
 确认为版本问题，具体要结合当前环境
-```npm i -g npm@5.0.0
+```
+删除当前环境所有npm版本：
+sudo apt --auto-remove purge npm
+sudo apt --auto-remove purge nodejs
+执行npm 和node命令再次确认，如果相应路径还是存在，手动删除：
+sudo rm -rf /usr/local/bin/npm /usr/local/share/man/man1/node* /usr/local/lib/dtrace/node.d ~/.npm ~/.node-gyp /opt/local/bin/node opt/local/include/node /opt/local/lib/node_modules      
+sudo rm -rf /usr/local/lib/node*  
+sudo rm -rf /usr/local/include/node*                                                                         
+sudo rm -rf /usr/local/bin/node*                                                                                
+
+npm i -g npm@5.0.0
 npm install
 npm run build
 ```
