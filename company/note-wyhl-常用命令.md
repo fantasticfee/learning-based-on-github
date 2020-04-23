@@ -170,8 +170,9 @@ vi /etc/ssh/sshd_config
 重启systemctl restart sshd
 ```
 
-## 18、remove old npm version and install new version npm
+## 18、npm的常见问题，npm和nodejs版本不匹配
 ```
+remove old npm version and install new version npm
 删除当前环境所有npm版本：
 sudo apt --auto-remove purge npm
 sudo apt --auto-remove purge nodejs
@@ -184,6 +185,7 @@ sudo rm -rf /usr/local/bin/node*
 ubuntu安装新npm：
 curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 sudo apt-get install -y nodejs
+node install 命令执行的前排信息会显示与nodejs是否匹配
 
 centos安装npm：
 curl -sL https://rpm.nodesource.com/setup_6.x  |  bash  - 
