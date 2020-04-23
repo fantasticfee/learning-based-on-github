@@ -419,3 +419,8 @@ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
         - while true;do curl http://java:8081/harvestingResources/getIpRange;sleep
           6000;done
 ```
+
+## 47. 配置go mod
+```
+export GOPROXY=https://goproxy.cn
+```
