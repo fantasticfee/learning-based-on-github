@@ -427,8 +427,33 @@ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 export GOPROXY=https://goproxy.cn
 ```
 
-## 48、kuberntes get all
+## 48、做删除namespace时，kuberntes get all -n namespace_name 会看不到部分资源
 ```
-无法显示rolebinging,secret资源
+无法显示rolebinging,secret资源，必须手动删除，才能再去删除namespace,
+如果还是不行，只能etcdctl del 去删除相应的namespace及相关资源；
+不过需要注意的是，确认真正删除的某个应用，只是确认其安装的namespace完全删除，可能
+只对部分应用有用，比如采用rke去ha部署rancher，即使helm delete删除了应用，以及删除了cubepaas-namespace,
+重新使用helm安装，还是会发现以前的user数据（可能不止user），因此还需要查找本不属于kubernetes原生的namespace,
+将其他非原生的namespace完全删除
+```
 
+## 49、iptables基本操作
 ```
+仅允许某些IP访问指定端口：
+先禁用端口访问：iptables -I INPUT -p tcp --dport 8000 -j DROP
+允许特定IP访问：iptables -I INPUT -s IP地址/32 -p tcp --dport 8000 -j ACCEPT
+备份iptabes rules: iptables-save >/dd/iptables.bak  
+恢复iptables rules: iptables-restore </dd/iptables.bak
+iptables -A 添加的规则是添加在最后面。如针对INPUT链增加一条规则，接收从eth0口进入且源地址为192.168.0.0/16网段发往本机的数据
+iptables -A INPUT -i eth0 -s 192.168.0.0/16 -j ACCEPT  
+iptables -I 添加的规则默认添加至第一条
+```
+
+## 50、 ubuntu iptables没有设置systemctl启动
+```
+需要修改iptabels 表，并且重启电脑生效，但找不到对应路径，
+最终找到在/etc/iptables/rules.v4文件里面,iptables-save > /etc/iptables/rules.v4保存当前配置，
+然后重启电脑生效
+```
+
+## 49、
