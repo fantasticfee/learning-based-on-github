@@ -426,3 +426,9 @@ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 ```
 export GOPROXY=https://goproxy.cn
 ```
+
+## 48、kuberntes get all
+```
+无法显示rolebinging,secret资源
+
+```
