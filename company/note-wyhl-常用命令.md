@@ -456,4 +456,26 @@ iptables -I 添加的规则默认添加至第一条
 然后重启电脑生效
 ```
 
-## 49、
+## 51、centos7 内核3.10升级到4.4
+```
+#下载内核源
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+
+#安装最新版本内核
+yum --enablerepo=elrepo-kernel install -y kernel-lt
+
+#查看可用内核
+cat /boot/grub2/grub.cfg |grep menuentry
+
+#设置开机从新内核启动
+grub2-set-default "CentOS Linux (4.4.224-1.el7.elrepo.x86_64) 7 (Core)"
+
+#查看内核启动项
+grub2-editenv list
+
+#重启系统使内核生效
+reboot
+
+查看内核版本是否生效
+uname -r
+```
