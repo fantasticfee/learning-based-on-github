@@ -479,3 +479,60 @@ reboot
 查看内核版本是否生效
 uname -r
 ```
+
+## 52. ubuntu kubeadm安装指定版本k8s(转载链接https://zhuanlan.zhihu.com/p/111336681）
+```
+    更新源，设置国内下载镜像
+
+apt-get update && apt-get install -y apt-transport-https
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - 
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+EOF  
+apt-get update
+
+指定版本安装
+
+## 找到可用的版本
+apt-cache madison kubeadm
+
+## 指定版本
+K_VER="1.17.3-00"
+apt-get install -y kubelet=${K_VER}
+apt-get install -y kubectl=${K_VER}
+apt-get install -y kubeadm=${K_VER}
+
+下载镜像脚本
+#!/bin/bash
+
+images=(k8s.gcr.io/kube-apiserver:v1.17.3
+        k8s.gcr.io/kube-controller-manager:v1.17.3
+        k8s.gcr.io/kube-scheduler:v1.17.3
+        k8s.gcr.io/kube-proxy:v1.17.3
+        k8s.gcr.io/pause:3.1
+        k8s.gcr.io/etcd:3.4.3-0
+        k8s.gcr.io/coredns:1.6.5)
+
+for var in ${images[@]};do
+        image=${var/k8s.gcr.io\//gcr.azk8s.cn\/google-containers/}
+        docker pull ${image}
+        docker tag ${image} ${var}
+done
+
+docker pull coredns/coredns:1.6.5
+docker tag coredns/coredns:1.6.5 k8s.gcr.io/coredns:1.6.5
+
+初始化Master节点（kubeadm init 命令）
+kubeadm init --apiserver-advertise-address 192.168.5.6 --apiserver-bind-port 6443 --kubernetes-version v1.17.3 --pod-networ                                            k-cidr 10.244.0.0/16
+
+ mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  
+安装flannel
+wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f kube-flannel.yml 
+
+wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+kubectl apply -f kube-flannel-rbac.yml
+  
+```
