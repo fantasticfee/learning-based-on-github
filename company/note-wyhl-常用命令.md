@@ -536,3 +536,19 @@ wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-m
 kubectl apply -f kube-flannel-rbac.yml
   
 ```
+
+## 53、指定docker版本安装
+```
+sudo apt-get update
+sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+
+curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+
+sudo apt-get -y update
+sudo apt-get -y install docker-ce
+apt-cache madison docker-ce
+apt-get install docker-ce={18.03.1~ce-0~ubuntu}可根据上面列出的选项选择
+ 
+```
