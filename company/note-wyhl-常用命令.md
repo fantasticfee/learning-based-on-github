@@ -552,3 +552,11 @@ apt-cache madison docker-ce
 apt-get install docker-ce={18.03.1~ce-0~ubuntu}可根据上面列出的选项选择
  
 ```
+
+## 54、windows与linux使用xshell上传下载文件
+```
+yum install lrzsz -y
+rz，sz是便是Linux/Unix同Windows进行ZModem文件传输的命令行工具。
+运行命令rz，即是接收文件，xshell就会弹出文件选择对话框，选好文件之后关闭对话框，文件就会上传到linux里的当前目录。
+运行命令sz file 就是发文件到windows上
+```
