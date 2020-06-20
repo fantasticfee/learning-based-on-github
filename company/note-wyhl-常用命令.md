@@ -620,4 +620,6 @@ echo "by openthings@https://my.oschina.net/u/2306127."
 echo "===================================================="
 
 echo ""
+
+docker tag k8s.gcr.io/pause-amd64:3.1 k8s.gcr.io/pause:3.1
 ```
