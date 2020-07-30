@@ -623,3 +623,9 @@ echo ""
 
 docker tag k8s.gcr.io/pause-amd64:3.1 k8s.gcr.io/pause:3.1
 ```
+
+## 56、journalctl日志
+```
+#指定服务和时间段获取日志
+journalctl -u kubelet --since "2020-07-29" --until "2020-07-29 21:00"
+```
