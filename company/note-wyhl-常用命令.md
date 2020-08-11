@@ -629,3 +629,14 @@ docker tag k8s.gcr.io/pause-amd64:3.1 k8s.gcr.io/pause:3.1
 #指定服务和时间段获取日志
 journalctl -u kubelet --since "2020-07-29" --until "2020-07-29 21:00"
 ```
+
+## 57、ubuntu18.04 修改网卡名称为eth0
+```
+vim /etc/default/grub
+GRUB_CMDLINE_LINUX=""  -> GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"
+grub-mkconfig -o /boot/grub/grub.cfg
+
+vim /etc/netplan/xxxxx
+经网卡名称改为eth0
+
+```
