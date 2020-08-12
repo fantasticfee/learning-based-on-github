@@ -640,3 +640,9 @@ vim /etc/netplan/xxxxx
 经网卡名称改为eth0
 
 ```
+
+## 58、进入docker容器网络空间
+```
+docker inspect -f '{{.State.Pid}}' df577abb762b
+nsenter -t {{pid}} exec /bin/sh
+```
