@@ -646,3 +646,8 @@ vim /etc/netplan/xxxxx
 docker inspect -f '{{.State.Pid}}' df577abb762b
 nsenter -t {{pid}} exec /bin/sh
 ```
+
+## 59、根据overlay2目录下的id查找到对应的容器
+```
+docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Id}}, {{.Name}}, {{.GraphDriver.Data.WorkDir}}' | grep {id}
+```
