@@ -49,5 +49,6 @@ pod cidr来分配ip；kubernetes根据controller-manager参数cluster_cidr和nod
 https://github.com/coreos/flannel/blob/master/Documentation/running.md
 步骤
 
-1. 修改controller-manager启动参数，目的是增加pod网段范围，不需要修改cluster_cidr,只需要添加node-cidr-mask-size；
-2. 
+1. 修改controller-manager启动参数，目的是增加pod网段范围，不需要修改cluster_cidr,只需要添加node-cidr-mask-size；（前提--allocate-node-cidrs=true）；
+2. 修改node的podcidr字段，因为canal采用的是flannel的kube-subnet-mgr来管理分配ip，实际上是在节点加入集群时根据第一步中controller-manager
+的两个字段设置node 的podcidr字段，而在第一步修改之前加入的node，因为子网段不同，所以也需要修改node的podcidr字段，
