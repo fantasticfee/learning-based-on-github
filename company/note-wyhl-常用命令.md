@@ -651,3 +651,9 @@ nsenter -t {{pid}} exec /bin/sh
 ```
 docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Id}}, {{.Name}}, {{.GraphDriver.Data.WorkDir}}' | grep {id}
 ```
+
+## 60、根据进程id获取容器id
+```
+pstree -sg {pid}
+docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Name}}' | grep {parent-pid}
+```
