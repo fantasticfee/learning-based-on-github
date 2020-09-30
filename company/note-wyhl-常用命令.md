@@ -650,6 +650,7 @@ nsenter -t {{pid}} exec /bin/sh
 ## 59、根据overlay2目录下的id查找到对应的容器
 ```
 docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Id}}, {{.Name}}, {{.GraphDriver.Data.WorkDir}}' | grep {id}
+ docker inspect $(docker ps -qa) |  jq -r 'map([.Name, .GraphDriver.Data.MergedDir]) | .[] | "\(.[0])\t\(.[1])"'
 ```
 
 ## 60、根据进程id获取容器id
