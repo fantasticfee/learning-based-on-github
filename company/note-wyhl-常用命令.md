@@ -658,3 +658,9 @@ docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Id}}, {{.Name}}
 pstree -sg {pid}
 docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Name}}' | grep {parent-pid}
 ```
+
+## 61、生成自签名证书
+```
+openssl req -newkey rsa:2048 -nodes -keyout tls.key -x509 -days 365 -out tls.crt
+kubectl create secret generic traefik-cert --from-file=tls.crt --from-file=tls.key -n kube-system
+```
