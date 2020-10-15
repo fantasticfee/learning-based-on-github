@@ -664,3 +664,12 @@ docker ps -q | xargs docker inspect --format '{{.State.Pid}}, {{.Name}}' | grep 
 openssl req -newkey rsa:2048 -nodes -keyout tls.key -x509 -days 365 -out tls.crt
 kubectl create secret generic traefik-cert --from-file=tls.crt --from-file=tls.key -n kube-system
 ```
+
+## 62、rancher证书过期导致重启失败
+```
+cd /var/lib/cubepaas/management-state/tls
+mv token-node.crt token-node.crt.bak
+mv localhost.crt localhost.crt.bak
+删除数据面节点证书：
+rm -rf /etc/kubernetes/ssl/*
+```
