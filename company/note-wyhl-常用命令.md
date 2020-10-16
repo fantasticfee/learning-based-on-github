@@ -673,3 +673,9 @@ mv localhost.crt localhost.crt.bak
 删除数据面节点证书：
 rm -rf /etc/kubernetes/ssl/*
 ```
+
+## 63、ubuntu系统磁盘挂载点出现无法查看文件的情况，出现I/O input error，umount 挂载点也显示busy
+```
+进入ubuntu紧急模式，运行命令：
+xfs_repair /dev/sdb{id} //这里注意是分区而不是整块磁盘
+```
