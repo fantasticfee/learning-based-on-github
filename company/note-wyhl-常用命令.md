@@ -679,3 +679,16 @@ rm -rf /etc/kubernetes/ssl/*
 进入ubuntu紧急模式，运行命令：
 xfs_repair /dev/sdb{id} //这里注意是分区而不是整块磁盘
 ```
+
+## 64、kubernetes svc 使用nodeport方式暴露服务，原ip是内网ip，默认路由也是走的内网ip网关，这个时候需要外网访问，
+需要给当前的内网网卡添加一个外网ip，然而这个时候会发现 外网ip:nodeport的方式无法访问，只有内网ip有效，猜测原因是
+回来的包经过默认路由走内网线路了，导致无法访问；
+
+需要对ipatbles规则进行设置：
+```
+iptables -t nat -A PREROUTING -i 112.17.251.124（外网ip） -p tcp -m tcp --dport 30551(nodeport) -j DNAT --to-destination 172.31.25.53:30551(nodeport)
+修改 /etc/iproute2/rt_tables，添加table表251
+添加ip rule规则：
+ ip rule add from 112.17.251.124(外网ip)/28(位数) table 251
+```
+
